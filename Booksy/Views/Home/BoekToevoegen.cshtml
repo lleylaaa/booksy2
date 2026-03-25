@@ -1,0 +1,26 @@
+﻿@model Booksy.Models.Boek
+
+<div style="max-width:500px; margin:60px auto;">
+    <h2>Boek toevoegen</h2>
+
+    <form method="post" style="display:flex; flex-direction:column; gap:16px; margin-top:24px;">
+        <div>
+            <label>Titel *</label><br />
+            <input asp-for="Naam" style="width:100%; padding:8px; margin-top:4px;" />
+        </div>
+        <div>
+            <label>Auteur *</label><br />
+            <input asp-for="Auteur" style="width:100%; padding:8px; margin-top:4px;" />
+        </div>
+        <div>
+            <label>Genre</label><br />
+            <input asp-for="Genre" style="width:100%; padding:8px; margin-top:4px;" />
+        </div>
+        <div style="display:flex; gap:12px; margin-top:8px;">
+            <button type="submit" style="padding:10px 24px; cursor:pointer;">Opslaan</button>
+            <a href="/Home/Boekenoverzicht">
+                <button type="button" style="padding:10px 24px; cursor:pointer;">Annuleren</button>
+            </a>
+        </div>
+    </form>
+</div>
