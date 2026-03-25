@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Booksy/Booksy.csproj" />
+  <Project Path="DAL/DAL.csproj" Id="ac68074f-b2ff-46df-8e34-d554c2c6723d" />
+  <Project Path="Interface/Interface.csproj" Id="ddcd1695-af56-4ba7-853c-88c10fb30b1c" />
+  <Project Path="ServiceLibrary/ServiceLibrary.csproj" Id="fca8cc78-b961-4282-9bac-ddc0235ebd44" />
+  <Project Path="UnitTestProject1/UnitTestProject1.csproj" Id="b0632cdc-bb65-4a73-9149-6e865cb05730" />
+</Solution>

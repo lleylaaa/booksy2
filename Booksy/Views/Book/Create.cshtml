@@ -1,0 +1,45 @@
+@model Booksy.ViewModels.BookViewModel
+
+@{
+    ViewData["Title"] = "Boek Toevoegen";
+}
+
+<div class="container mt-4">
+    <h1>Nieuw Boek</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Titel</label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Author" class="form-label">Auteur</label>
+                    <input asp-for="Author" class="form-control" />
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Genre" class="form-label">Genre</label>
+                    <input asp-for="Genre" class="form-control" />
+                    <span asp-validation-for="Genre" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Rating" class="form-label">Rating</label>
+                    <input asp-for="Rating" class="form-control" type="number" min="1" max="5" />
+                    <span asp-validation-for="Rating" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="Opslaan" class="btn btn-primary" />
+                    <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

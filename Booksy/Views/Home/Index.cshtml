@@ -1,0 +1,29 @@
+﻿@model List<Booksy.ViewModels.BookViewModel>
+
+@{
+    ViewData["Title"] = "Boeken Beheer";
+}
+
+<h2>--- BOEKEN BEHEER ---</h2>
+
+<a href="/Book/Create" class="btn btn-dark">+ NIEUW BOEK TOEVOEGEN</a>
+
+@if (Model.Count == 0)
+{
+    <p>Geen boeken gevonden.</p>
+}
+else
+{
+    @foreach (var book in Model)
+    {
+        <div class="card">
+            <div class="card-title">[TITEL] @book.Name</div>
+            <div class="card-sub">door: @book.Author</div>
+            <div class="card-actions">
+                <a href="/Book/Details/@book.BookID" class="btn">BEKIJKEN</a>
+                <a href="/Book/Edit/@book.BookID" class="btn">BEWERKEN</a>
+                <a href="/Book/Delete/@book.BookID" class="btn">VERWIJDEREN</a>
+            </div>
+        </div>
+    }
+}

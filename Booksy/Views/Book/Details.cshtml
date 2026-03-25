@@ -1,0 +1,49 @@
+@model Booksy.ViewModels.BookViewModel
+
+@{
+    ViewData["Title"] = "Boek Details";
+}
+
+<div class="container mt-4">
+    <h1>Details van @Model.Name</h1>
+
+    <div class="card mt-3">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Titel</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Auteur</dt>
+                <dd class="col-sm-9">@Model.Author</dd>
+
+                <dt class="col-sm-3">Genre</dt>
+                <dd class="col-sm-9">@Model.Genre</dd>
+
+                <dt class="col-sm-3">Rating</dt>
+                <dd class="col-sm-9">
+                    @(Model.Rating.HasValue ? Model.Rating + " / 5 sterren" : "Nog geen rating")
+                    
+                    <form asp-action="SetRating" method="post" class="mt-2 row g-2">
+                        <input type="hidden" name="bookID" value="@Model.BookID" />
+                        <div class="col-auto">
+                            <select name="rating" class="form-select form-select-sm">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-sm btn-secondary">Beoordeel</button>
+                        </div>
+                    </form>
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.BookID" class="btn btn-warning">Bewerken</a>
+            <a asp-action="Index" class="btn btn-outline-primary">Terug naar lijst</a>
+        </div>
+    </div>
+</div>

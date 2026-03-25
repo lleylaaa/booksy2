@@ -1,0 +1,180 @@
+html
+body {
+    font-family: 'Courier New', monospace;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #ddd;
+    padding: 10px 20px;
+    border-bottom: 2px solid #aaa;
+}
+
+    nav a {
+        text-decoration: underline;
+        color: black;
+        margin-right: 20px;
+        font-size: 13px;
+    }
+
+h2 {
+    font-family: 'Courier New', monospace;
+    letter-spacing: 4px;
+    border-bottom: 2px solid black;
+    padding-bottom: 8px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.card-sub {
+    color: #555;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.card-actions {
+    margin-top: 12px;
+    text-align: right;
+}
+
+.btn {
+    padding: 6px 14px;
+    border: 1px solid #aaa;
+    background: #ddd;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    margin-left: 6px;
+    text-decoration: none;
+    color: black;
+}
+
+.btn-dark {
+    background: #555;
+    color: white;
+    border: 1px solid #333;
+}
+
+.form-box {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 24px;
+    margin-top: 16px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+    .form-group label {
+        display: block;
+        font-size: 12px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        font-family: 'Courier New', monospace;
+        font-size: 14px;
+        box-sizing: border-box;
+    }
+
+.info-box {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 16px;
+}
+
+.info-row {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+}
+
+.info-label {
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #555;
+}
+
+.info-value {
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+.rating-stars span {
+    font-size: 20px;
+}
+
+.action-box {
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-top: 12px;
+}
+
+.rating-buttons {
+    border: 1px dashed #aaa;
+    padding: 16px;
+    margin-top: 12px;
+}
+
+.rating-number {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    border: 1px solid #aaa;
+    background: #eee;
+    text-align: center;
+    line-height: 36px;
+    margin-right: 6px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+}
+
+    .rating-number.active {
+        background: #555;
+        color: white;
+    }
+
+.delete-modal {
+    background: white;
+    border: 2px solid #aaa;
+    padding: 30px;
+    max-width: 500px;
+    margin: 60px auto;
+}
+
+.note-box {
+    background: #eee;
+    border: 1px solid #ccc;
+    padding: 12px;
+    font-size: 12px;
+    color: #555;
+    margin-top: 16px;
+}
+
+.page-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
