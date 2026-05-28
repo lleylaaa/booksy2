@@ -7,24 +7,16 @@ namespace UnitTestProject1.Models
     public class BookModelTests
     {
         [TestMethod]
-        public void BookModel_SetProperties_WorksCorrectly()
+        public void BookModel_Constructor_SetsPropertiesCorrectly()
         {
-            // Arrange
-            var book = new BookModel();
-
-            // Act
-            book.BookID = 1;
-            book.Name = "Test Titel";
-            book.Author = "Test Auteur";
-            book.Genre = "Fantasy";
-            book.Rating = 4;
+            // Arrange & Act
+            var book = new BookModel(1, "Test Titel", "Test Auteur", "Fantasy");
 
             // Assert
             Assert.AreEqual(1, book.BookID);
             Assert.AreEqual("Test Titel", book.Name);
             Assert.AreEqual("Test Auteur", book.Author);
             Assert.AreEqual("Fantasy", book.Genre);
-            Assert.AreEqual(4, book.Rating);
         }
     }
 }

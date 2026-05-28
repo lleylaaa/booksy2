@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ServiceLibrary.Services;
-using ServiceLibrary.Models;
 using Booksy.ViewModels;
+using Booksy.Extensions;
 
 namespace Booksy.Controllers
 {
@@ -18,12 +18,7 @@ namespace Booksy.Controllers
         {
             var u = _svc.GetUserById(id);
             if (u == null) return RedirectToAction("Index", "Book");
-            return View(new UserViewModel
-            {
-                UserID = u.UserID,
-                Name = u.Name,
-                Email = u.Email
-            });
+            return View(u.ToViewModel());
         }
 
         public IActionResult Create()
@@ -34,11 +29,7 @@ namespace Booksy.Controllers
         [HttpPost]
         public IActionResult Create(UserViewModel vm)
         {
-            _svc.AddUser(new UserModel
-            {
-                Name = vm.Name,
-                Email = vm.Email
-            });
+            _svc.AddUser(vm.Name ?? "", vm.Email ?? "");
             return RedirectToAction("Index", "Book");
         }
     }

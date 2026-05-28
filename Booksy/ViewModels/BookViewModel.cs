@@ -13,8 +13,5 @@ namespace Booksy.ViewModels
         public string? Author { get; set; }
 
         public string? Genre { get; set; }
-
-        [Range(1, 5, ErrorMessage = "Rating moet tussen 1 en 5 zijn.")]
-        public int? Rating { get; set; }
     }
 }

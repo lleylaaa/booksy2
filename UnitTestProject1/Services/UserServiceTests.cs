@@ -51,11 +51,8 @@ namespace UnitTestProject1.Services
         [TestMethod]
         public void AddUser_AddsUserCorrectly()
         {
-            // Arrange
-            var newUser = new UserModel { Name = "Nieuwe Gebruiker", Email = "nieuw@test.nl" };
-
             // Act
-            _userService.AddUser(newUser);
+            _userService.AddUser("Nieuwe Gebruiker", "nieuw@test.nl");
 
             // Assert
             var result = _userService.GetUserById(2); // Fake repo wijst ID 2 toe aan de eerste toegevoegde user

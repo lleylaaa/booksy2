@@ -1,12 +1,12 @@
-namespace ServiceLibrary.Models
+namespace Interface
 {
-    public class UserModel
+    public class UserDTO
     {
         public int UserID { get; }
         public string Name { get; }
         public string Email { get; }
 
-        public UserModel(int userID, string name, string email)
+        public UserDTO(int userID, string name, string email)
         {
             UserID = userID;
             Name = name;

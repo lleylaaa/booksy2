@@ -1,49 +1,100 @@
-@model Booksy.ViewModels.BookViewModel
+@model Booksy.ViewModels.BookDetailsViewModel
 
 @{
     ViewData["Title"] = "Boek Details";
 }
 
 <div class="container mt-4">
-    <h1>Details van @Model.Name</h1>
+    <h1>Details van @Model.Book.Name</h1>
 
     <div class="card mt-3">
         <div class="card-body">
             <dl class="row">
                 <dt class="col-sm-3">Titel</dt>
-                <dd class="col-sm-9">@Model.Name</dd>
+                <dd class="col-sm-9">@Model.Book.Name</dd>
 
                 <dt class="col-sm-3">Auteur</dt>
-                <dd class="col-sm-9">@Model.Author</dd>
+                <dd class="col-sm-9">@Model.Book.Author</dd>
 
                 <dt class="col-sm-3">Genre</dt>
-                <dd class="col-sm-9">@Model.Genre</dd>
-
-                <dt class="col-sm-3">Rating</dt>
-                <dd class="col-sm-9">
-                    @(Model.Rating.HasValue ? Model.Rating + " / 5 sterren" : "Nog geen rating")
-                    
-                    <form asp-action="SetRating" method="post" class="mt-2 row g-2">
-                        <input type="hidden" name="bookID" value="@Model.BookID" />
-                        <div class="col-auto">
-                            <select name="rating" class="form-select form-select-sm">
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                        </div>
-                        <div class="col-auto">
-                            <button type="submit" class="btn btn-sm btn-secondary">Beoordeel</button>
-                        </div>
-                    </form>
-                </dd>
+                <dd class="col-sm-9">@Model.Book.Genre</dd>
             </dl>
         </div>
         <div class="card-footer">
-            <a asp-action="Edit" asp-route-id="@Model.BookID" class="btn btn-warning">Bewerken</a>
+            <a asp-action="Edit" asp-route-id="@Model.Book.BookID" class="btn btn-warning">Bewerken</a>
             <a asp-action="Index" class="btn btn-outline-primary">Terug naar lijst</a>
         </div>
     </div>
+
+    <hr />
+
+    <h2 class="mt-4">Reviews</h2>
+
+    @if (!Model.Reviews.Any())
+    {
+        <p class="text-muted">Er zijn nog geen reviews voor dit boek.</p>
+    }
+    else
+    {
+        @foreach (var review in Model.Reviews)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <p class="card-text">@review.Tekst</p>
+                    <p class="mb-1">
+                        <strong>Rating:</strong>
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <span style="color: @(i <= review.Rating ? "#f5a623" : "#ccc"); font-size: 1.2rem;">&#9733;</span>
+                        }
+                        (@review.Rating / 5)
+                    </p>
+                    <small class="text-muted">Geplaatst op: @review.Datum.ToString("dd-MM-yyyy")</small>
+                </div>
+                <div class="card-footer text-end">
+                    <a asp-controller="Review" asp-action="Delete"
+                       asp-route-id="@review.ReviewID"
+                       asp-route-bookId="@review.BookID"
+                       class="btn btn-sm btn-danger">Verwijderen</a>
+                </div>
+            </div>
+        }
+    }
+
+    <hr />
+
+    <h3 class="mt-4">Review schrijven</h3>
+    <div class="card">
+        <div class="card-body">
+            <form asp-controller="Review" asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" name="BookID" value="@Model.NewReview.BookID" />
+
+
+
+                <div class="mb-3">
+                    <label for="Tekst" class="form-label">Uw review</label>
+                    <textarea id="Tekst" name="Tekst" class="form-control" rows="3" required></textarea>
+                    <span class="text-danger" data-valmsg-for="Tekst"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label for="Rating" class="form-label">Rating (1-5)</label>
+                    <select id="Rating" name="Rating" class="form-select">
+                        <option value="1">1 - Slecht</option>
+                        <option value="2">2 - Matig</option>
+                        <option value="3">3 - Gemiddeld</option>
+                        <option value="4">4 - Goed</option>
+                        <option value="5" selected>5 - Uitstekend</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Review plaatsen</button>
+            </form>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

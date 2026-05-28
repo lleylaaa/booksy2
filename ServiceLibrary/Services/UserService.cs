@@ -1,9 +1,10 @@
 using Interface;
+using ServiceLibrary.Extensions;
 using ServiceLibrary.Models;
 
 namespace ServiceLibrary.Services
 {
-    public class UserService : IUserService
+    public class UserService
     {
         private readonly IUserRepository _repo;
 
@@ -14,21 +15,14 @@ namespace ServiceLibrary.Services
 
         public UserModel? GetUserById(int id)
         {
-            var tuple = _repo.GetUserById(id);
-            if (tuple == null) return null;
-
-            var t = tuple.Value;
-            return new UserModel
-            {
-                UserID = t.UserID,
-                Name = t.Name,
-                Email = t.Email
-            };
+            var dto = _repo.GetUserById(id);
+            if (dto == null) return null;
+            return dto.ToModel();
         }
 
-        public void AddUser(UserModel user)
+        public void AddUser(string name, string email)
         {
-            _repo.AddUser(user.Name ?? "", user.Email ?? "");
+            _repo.AddUser(name, email);
         }
     }
 }

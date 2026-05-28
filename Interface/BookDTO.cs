@@ -1,13 +1,13 @@
-namespace ServiceLibrary.Models
+namespace Interface
 {
-    public class BookModel
+    public class BookDTO
     {
         public int BookID { get; }
         public string Name { get; }
         public string Author { get; }
         public string Genre { get; }
 
-        public BookModel(int bookID, string name, string author, string genre)
+        public BookDTO(int bookID, string name, string author, string genre)
         {
             BookID = bookID;
             Name = name;

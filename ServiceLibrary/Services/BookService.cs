@@ -1,12 +1,13 @@
-using System;
+ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Interface;
+using ServiceLibrary.Extensions;
 using ServiceLibrary.Models;
 
 namespace ServiceLibrary.Services
 {
-    public class BookService : IBookService
+    public class BookService
     {
         private readonly IBookRepository _repo;
 
@@ -17,74 +18,39 @@ namespace ServiceLibrary.Services
 
         public List<BookModel> GetAllBooks()
         {
-            return _repo.GetAllBooks().Select(tuple => new BookModel
-            {
-                BookID = tuple.BookID,
-                Name = tuple.Name,
-                Author = tuple.Author,
-                Genre = tuple.Genre,
-                Rating = tuple.Rating
-            }).ToList();
+            return _repo.GetAllBooks()
+                .Select(dto => dto.ToModel())
+                .ToList();
         }
 
         public BookModel? GetBookById(int id)
         {
-            var tuple = _repo.GetBookById(id);
-            if (tuple == null) return null;
-
-            var t = tuple.Value;
-            return new BookModel
-            {
-                BookID = t.BookID,
-                Name = t.Name,
-                Author = t.Author,
-                Genre = t.Genre,
-                Rating = t.Rating
-            };
+            var dto = _repo.GetBookById(id);
+            if (dto == null) return null;
+            return dto.ToModel();
         }
 
-        public void AddBook(BookModel book)
+        public void AddBook(string name, string author, string genre)
         {
-            ValidateBook(book);
-            _repo.AddBook(book.Name ?? "", book.Author ?? "", book.Genre ?? "", book.Rating);
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Titel is verplicht.");
+            if (string.IsNullOrWhiteSpace(author))
+                throw new ArgumentException("Auteur is verplicht.");
+            _repo.AddBook(name, author, genre);
         }
 
-        public void UpdateBook(BookModel book)
+        public void UpdateBook(int id, string name, string author, string genre)
         {
-            ValidateBook(book);
-            _repo.UpdateBook(book.BookID, book.Name ?? "", book.Author ?? "", book.Genre ?? "", book.Rating);
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentException("Titel is verplicht.");
+            if (string.IsNullOrWhiteSpace(author))
+                throw new ArgumentException("Auteur is verplicht.");
+            _repo.UpdateBook(id, name, author, genre);
         }
 
         public void DeleteBook(int id)
         {
             _repo.DeleteBook(id);
-        }
-
-        public void SetRating(int bookId, int rating)
-        {
-            if (rating < 1 || rating > 5)
-            {
-                throw new ArgumentException("Rating moet tussen 1 en 5 zijn.");
-            }
-
-            var book = GetBookById(bookId);
-            if (book != null)
-            {
-                book.Rating = rating;
-                UpdateBook(book);
-            }
-        }
-
-        private void ValidateBook(BookModel book)
-        {
-            if (string.IsNullOrWhiteSpace(book.Name))
-            {
-                throw new ArgumentException("Titel is verplicht.");
-            }
-            if (string.IsNullOrWhiteSpace(book.Author))
-            {
-                throw new ArgumentException("Auteur is verplicht.");
-            }
         }
     }
 }

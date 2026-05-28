@@ -14,23 +14,22 @@ namespace DAL.Repositories
             _connectionString = connectionString;
         }
 
-        public List<(int BookID, string Name, string Author, string Genre, int? Rating)> GetAllBooks()
+        public List<BookDTO> GetAllBooks()
         {
             try
             {
-                var list = new List<(int BookID, string Name, string Author, string Genre, int? Rating)>();
+                var list = new List<BookDTO>();
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
-                var cmd = new SqlCommand("SELECT BoekID, Naam, Auteur, Genre, Rating FROM Book", conn);
+                var cmd = new SqlCommand("SELECT BoekID, Naam, Auteur, Genre FROM Book", conn);
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    list.Add((
+                    list.Add(new BookDTO(
                         (int)reader["BoekID"],
                         reader["Naam"].ToString() ?? "",
                         reader["Auteur"].ToString() ?? "",
-                        reader["Genre"].ToString() ?? "",
-                        reader["Rating"] == DBNull.Value ? null : (int?)reader["Rating"]
+                        reader["Genre"].ToString() ?? ""
                     ));
                 }
                 return list;
@@ -41,23 +40,22 @@ namespace DAL.Repositories
             }
         }
 
-        public (int BookID, string Name, string Author, string Genre, int? Rating)? GetBookById(int id)
+        public BookDTO? GetBookById(int id)
         {
             try
             {
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
-                var cmd = new SqlCommand("SELECT BoekID, Naam, Auteur, Genre, Rating FROM Book WHERE BoekID = @id", conn);
+                var cmd = new SqlCommand("SELECT BoekID, Naam, Auteur, Genre FROM Book WHERE BoekID = @id", conn);
                 cmd.Parameters.AddWithValue("@id", id);
                 var reader = cmd.ExecuteReader();
                 if (reader.Read())
                 {
-                    return (
+                    return new BookDTO(
                         (int)reader["BoekID"],
                         reader["Naam"].ToString() ?? "",
                         reader["Auteur"].ToString() ?? "",
-                        reader["Genre"].ToString() ?? "",
-                        reader["Rating"] == DBNull.Value ? null : (int?)reader["Rating"]
+                        reader["Genre"].ToString() ?? ""
                     );
                 }
                 return null;
@@ -68,18 +66,17 @@ namespace DAL.Repositories
             }
         }
 
-        public void AddBook(string name, string author, string genre, int? rating)
+        public void AddBook(string name, string author, string genre)
         {
             try
             {
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
                 var cmd = new SqlCommand(
-                    "INSERT INTO Book (Naam, Auteur, Genre, Rating) VALUES (@Naam, @Auteur, @Genre, @Rating)", conn);
+                    "INSERT INTO Book (Naam, Auteur, Genre) VALUES (@Naam, @Auteur, @Genre)", conn);
                 cmd.Parameters.AddWithValue("@Naam", name);
                 cmd.Parameters.AddWithValue("@Auteur", author);
                 cmd.Parameters.AddWithValue("@Genre", (object?)genre ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@Rating", (object?)rating ?? DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
             catch (SqlException ex)
@@ -88,18 +85,17 @@ namespace DAL.Repositories
             }
         }
 
-        public void UpdateBook(int id, string name, string author, string genre, int? rating)
+        public void UpdateBook(int id, string name, string author, string genre)
         {
             try
             {
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
                 var cmd = new SqlCommand(
-                    "UPDATE Book SET Naam=@Naam, Auteur=@Auteur, Genre=@Genre, Rating=@Rating WHERE BoekID=@id", conn);
+                    "UPDATE Book SET Naam=@Naam, Auteur=@Auteur, Genre=@Genre WHERE BoekID=@id", conn);
                 cmd.Parameters.AddWithValue("@Naam", name);
                 cmd.Parameters.AddWithValue("@Auteur", author);
                 cmd.Parameters.AddWithValue("@Genre", (object?)genre ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@Rating", (object?)rating ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
             }

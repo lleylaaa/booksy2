@@ -7,15 +7,10 @@ namespace UnitTestProject1.Models
     public class UserModelTests
     {
         [TestMethod]
-        public void UserModel_SetProperties_WorksCorrectly()
+        public void UserModel_Constructor_SetsPropertiesCorrectly()
         {
-            // Arrange
-            var user = new UserModel();
-
-            // Act
-            user.UserID = 1;
-            user.Name = "Test Gebruiker";
-            user.Email = "test@test.nl";
+            // Arrange & Act
+            var user = new UserModel(1, "Test Gebruiker", "test@test.nl");
 
             // Assert
             Assert.AreEqual(1, user.UserID);

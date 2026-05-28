@@ -9,10 +9,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 // Repositories (DAL)
 builder.Services.AddScoped<IBookRepository>(_ => new BookRepository(connectionString));
 builder.Services.AddScoped<IUserRepository>(_ => new UserRepository(connectionString));
+builder.Services.AddScoped<IReviewRepository>(_ => new ReviewRepository(connectionString));
 
 // Services (ServiceLibrary)
-builder.Services.AddScoped<IBookService, BookService>();
-builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<BookService>();
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ReviewService>();
 
 builder.Services.AddControllersWithViews();
 

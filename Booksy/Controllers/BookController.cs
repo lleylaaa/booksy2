@@ -1,46 +1,46 @@
 using Microsoft.AspNetCore.Mvc;
 using ServiceLibrary.Services;
-using ServiceLibrary.Models;
 using Booksy.ViewModels;
+using Booksy.Extensions;
+using System.Linq;
 
 namespace Booksy.Controllers
 {
     public class BookController : Controller
     {
-        private readonly IBookService _svc;
+        private readonly BookService _bookService;
+        private readonly ReviewService _reviewService;
 
-        public BookController(IBookService svc)
+        public BookController(BookService bookService, ReviewService reviewService)
         {
-            _svc = svc;
+            _bookService = bookService;
+            _reviewService = reviewService;
         }
 
         public IActionResult Index()
         {
-            var books = _svc.GetAllBooks()
-                .Select(b => new BookViewModel
-                {
-                    BookID = b.BookID,
-                    Name = b.Name,
-                    Author = b.Author,
-                    Genre = b.Genre,
-                    Rating = b.Rating
-                }).ToList();
+            var books = _bookService.GetAllBooks()
+                .Select(b => b.ToViewModel())
+                .ToList();
             return View(books);
         }
 
         public IActionResult Details(int id)
         {
-            var b = _svc.GetBookById(id);
+            var b = _bookService.GetBookById(id);
             if (b == null) return RedirectToAction("Index");
 
-            return View(new BookViewModel
+            var reviews = _reviewService.GetReviewsByBookId(id)
+                .Select(r => r.ToViewModel())
+                .ToList();
+
+            var vm = new BookDetailsViewModel
             {
-                BookID = b.BookID,
-                Name = b.Name,
-                Author = b.Author,
-                Genre = b.Genre,
-                Rating = b.Rating
-            });
+                Book = b.ToViewModel(),
+                Reviews = reviews,
+                NewReview = new ReviewViewModel { BookID = id }
+            };
+            return View(vm);
         }
 
         public IActionResult Create()
@@ -55,32 +55,21 @@ namespace Booksy.Controllers
             {
                 return View(vm);
             }
-
-            _svc.AddBook(new BookModel
-            {
-                Name = vm.Name,
-                Author = vm.Author,
-                Genre = vm.Genre,
-                Rating = vm.Rating
-            });
+            _bookService.AddBook(vm.Name ?? "", vm.Author ?? "", vm.Genre ?? "");
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            var b = _svc.GetBookById(id);
+            var b = _bookService.GetBookById(id);
             if (b == null) return RedirectToAction("Index");
-
-            // FR-04/B-04-02: Alleen de eigenaar mag het bewerken.
-            // Placeholder: Check logic hier als er een login systeem is.
 
             return View(new BookViewModel
             {
                 BookID = b.BookID,
                 Name = b.Name,
                 Author = b.Author,
-                Genre = b.Genre,
-                Rating = b.Rating
+                Genre = b.Genre
             });
         }
 
@@ -91,22 +80,14 @@ namespace Booksy.Controllers
             {
                 return View(vm);
             }
-
-            _svc.UpdateBook(new BookModel
-            {
-                BookID = vm.BookID,
-                Name = vm.Name,
-                Author = vm.Author,
-                Genre = vm.Genre,
-                Rating = vm.Rating
-            });
+            _bookService.UpdateBook(vm.BookID, vm.Name ?? "", vm.Author ?? "", vm.Genre ?? "");
             // K-04-01: Na het opslaan wordt de gebruiker teruggestuurd naar de detailpagina.
             return RedirectToAction("Details", new { id = vm.BookID });
         }
 
         public IActionResult Delete(int id)
         {
-            var b = _svc.GetBookById(id);
+            var b = _bookService.GetBookById(id);
             if (b == null) return RedirectToAction("Index");
 
             return View(new BookViewModel
@@ -121,16 +102,9 @@ namespace Booksy.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeleteConfirmed(int BookID)
         {
-            _svc.DeleteBook(BookID);
+            _bookService.DeleteBook(BookID);
             // K-05-01: Na het verwijderen wordt de gebruiker teruggestuurd naar het boekenoverzicht.
             return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public IActionResult SetRating(int bookID, int rating)
-        {
-            _svc.SetRating(bookID, rating);
-            return RedirectToAction("Details", new { id = bookID });
         }
     }
 }

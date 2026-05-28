@@ -63,11 +63,8 @@ namespace UnitTestProject1.Services
         [TestMethod]
         public void AddBook_DoesNotThrow_WhenValid()
         {
-            // Arrange
-            var newBook = new BookModel { Name = "Nieuw Boek", Author = "Auteur X" };
-
             // Act
-            _bookService.AddBook(newBook);
+            _bookService.AddBook("Nieuw Boek", "Auteur X", "Fantasy");
 
             // Assert
             var books = _bookService.GetAllBooks();
@@ -78,13 +75,10 @@ namespace UnitTestProject1.Services
         [TestMethod]
         public void AddBook_ThrowsArgumentException_WhenNameIsNull()
         {
-            // Arrange
-            var newBook = new BookModel { Name = "", Author = "Auteur X" };
-
             // Act
             try
             {
-                _bookService.AddBook(newBook);
+                _bookService.AddBook("", "Auteur X", "Fantasy");
                 Assert.Fail("Verwachtte een ArgumentException.");
             }
             catch (ArgumentException)
@@ -96,13 +90,10 @@ namespace UnitTestProject1.Services
         [TestMethod]
         public void AddBook_ThrowsArgumentException_WhenAuthorIsNull()
         {
-            // Arrange
-            var newBook = new BookModel { Name = "Nieuw Boek", Author = "" };
-
             // Act
             try
             {
-                _bookService.AddBook(newBook);
+                _bookService.AddBook("Nieuw Boek", "", "Fantasy");
                 Assert.Fail("Verwachtte een ArgumentException.");
             }
             catch (ArgumentException)
@@ -114,11 +105,8 @@ namespace UnitTestProject1.Services
         [TestMethod]
         public void UpdateBook_UpdatesCorrectly()
         {
-            // Arrange
-            var bookToUpdate = new BookModel { BookID = 1, Name = "Aangepast Boek", Author = "Auteur 1", Genre = "Fictie", Rating = 4 };
-
             // Act
-            _bookService.UpdateBook(bookToUpdate);
+            _bookService.UpdateBook(1, "Aangepast Boek", "Auteur 1", "Fictie");
 
             // Assert
             var updatedBook = _bookService.GetBookById(1);
@@ -137,40 +125,6 @@ namespace UnitTestProject1.Services
             // Assert
             var result = _bookService.GetBookById(idToDelete);
             Assert.IsNull(result);
-        }
-
-        [TestMethod]
-        public void SetRating_UpdatesRating_WhenValid()
-        {
-            // Arrange
-            int bookId = 1;
-            int newRating = 5;
-
-            // Act
-            _bookService.SetRating(bookId, newRating);
-
-            // Assert
-            var updatedBook = _bookService.GetBookById(bookId);
-            Assert.AreEqual(5, updatedBook?.Rating);
-        }
-
-        [TestMethod]
-        public void SetRating_ThrowsArgumentException_WhenRatingIsTooHigh()
-        {
-            // Arrange
-            int bookId = 1;
-            int invalidRating = 6; // Mag maximaal 5 zijn
-
-            // Act
-            try
-            {
-                _bookService.SetRating(bookId, invalidRating);
-                Assert.Fail("Verwachtte een ArgumentException.");
-            }
-            catch (ArgumentException)
-            {
-                // Test geslaagd
-            }
         }
     }
 }

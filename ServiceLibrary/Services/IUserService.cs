@@ -1,10 +1,3 @@
-using ServiceLibrary.Models;
-
-namespace ServiceLibrary.Services
-{
-    public interface IUserService
-    {
-        UserModel? GetUserById(int id);
-        void AddUser(UserModel user);
-    }
-}
+// IUserService is verwijderd conform sprint-feedback.
+// UserService wordt direct via DI geregistreerd zonder interface.
+namespace ServiceLibrary.Services { }

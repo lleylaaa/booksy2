@@ -1,0 +1,26 @@
+@model Booksy.ViewModels.ReviewViewModel
+
+@{
+    ViewData["Title"] = "Review Verwijderen";
+}
+
+<div class="container mt-4">
+    <h1>Review Verwijderen</h1>
+    <hr />
+
+    <div class="alert alert-warning">
+        <p>Weet u zeker dat u deze review wilt verwijderen? Dit kan niet ongedaan worden gemaakt.</p>
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-3"></dt>
+        <dd class="col-sm-9"></dd>
+    </dl>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="id" value="@Model.ReviewID" />
+        <input type="hidden" name="bookId" value="@Model.BookID" />
+        <input type="submit" value="Verwijderen bevestigen" class="btn btn-danger" />
+        <a asp-controller="Book" asp-action="Details" asp-route-id="@Model.BookID" class="btn btn-secondary">Annuleren</a>
+    </form>
+</div>

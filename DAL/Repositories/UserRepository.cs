@@ -13,7 +13,7 @@ namespace DAL.Repositories
             _connectionString = connectionString;
         }
 
-        public (int UserID, string Name, string Email)? GetUserById(int id)
+        public UserDTO? GetUserById(int id)
         {
             using var conn = new SqlConnection(_connectionString);
             conn.Open();
@@ -22,7 +22,7 @@ namespace DAL.Repositories
             var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                return (
+                return new UserDTO(
                     (int)reader["GebruikerID"],
                     reader["Naam"].ToString() ?? "",
                     reader["Email"].ToString() ?? ""
