@@ -1,28 +1,18 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Booksy.Models;
-using Microsoft.Data.SqlClient;
 
 namespace Booksy.Controllers
 {
+    // Vangt onverwachte fouten op. Program.cs stuurt fouten naar /Home/Error
+    // wanneer de app niet in Development draait.
     public class HomeController : Controller
     {
-        private readonly IConfiguration _configuration;
-
-        public HomeController(IConfiguration configuration)
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
         {
-            _configuration = configuration;
+            var requestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+            return View("Error", new ErrorViewModel { RequestId = requestId });
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
     }
-} 
+}
