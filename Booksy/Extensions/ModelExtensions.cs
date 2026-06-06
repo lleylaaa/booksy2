@@ -27,14 +27,5 @@ namespace Booksy.Extensions
                 Datum = model.Datum
             };
         }
-    public static UserViewModel ToViewModel(this UserModel model)
-    {
-        return new UserViewModel
-        {
-            UserID = model.UserID,
-            Name = model.Name,
-            Email = model.Email
-        };
     }
-}
 }
