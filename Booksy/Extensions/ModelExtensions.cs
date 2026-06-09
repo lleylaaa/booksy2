@@ -22,9 +22,9 @@ namespace Booksy.Extensions
             {
                 ReviewID = model.ReviewID,
                 BookID = model.BookID,
-                Tekst = model.Tekst,
+                Text = model.Text,
                 Rating = model.Rating,
-                Datum = model.Datum
+                Date = model.Date
             };
         }
     }

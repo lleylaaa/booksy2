@@ -40,7 +40,7 @@
         {
             <div class="card mb-3">
                 <div class="card-body">
-                    <p class="card-text">@review.Tekst</p>
+                    <p class="card-text">@review.Text</p>
                     <p class="mb-1">
                         <strong>Rating:</strong>
                         @for (int i = 1; i <= 5; i++)
@@ -49,7 +49,7 @@
                         }
                         (@review.Rating / 5)
                     </p>
-                    <small class="text-muted">Geplaatst op: @review.Datum.ToString("dd-MM-yyyy")</small>
+                    <small class="text-muted">Geplaatst op: @review.Date.ToString("dd-MM-yyyy")</small>
                 </div>
                 <div class="card-footer text-end">
                     <a asp-controller="Review" asp-action="Delete"
@@ -70,12 +70,10 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="BookID" value="@Model.NewReview.BookID" />
 
-
-
                 <div class="mb-3">
-                    <label for="Tekst" class="form-label">Uw review</label>
-                    <textarea id="Tekst" name="Tekst" class="form-control" rows="3" required></textarea>
-                    <span class="text-danger" data-valmsg-for="Tekst"></span>
+                    <label for="Text" class="form-label">Uw review</label>
+                    <textarea id="Text" name="Text" class="form-control" rows="3" required></textarea>
+                    <span class="text-danger" data-valmsg-for="Text"></span>
                 </div>
 
                 <div class="mb-3">

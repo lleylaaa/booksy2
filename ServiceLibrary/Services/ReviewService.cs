@@ -23,13 +23,13 @@ namespace ServiceLibrary.Services
                 .ToList();
         }
 
-        public void AddReview(int bookId, string tekst, int rating)
+        public void AddReview(int bookId, string text, int rating)
         {
-            if (string.IsNullOrWhiteSpace(tekst))
+            if (string.IsNullOrWhiteSpace(text))
                 throw new ArgumentException("Tekst is verplicht.");
             if (rating < 1 || rating > 5)
                 throw new ArgumentException("Rating moet tussen 1 en 5 zijn.");
-            _repo.AddReview(bookId, tekst, rating);
+            _repo.AddReview(bookId, text, rating);
         }
 
         public void DeleteReview(int id)

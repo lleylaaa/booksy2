@@ -22,9 +22,9 @@ namespace UnitTestProject1.Fakes
             return _reviews.Where(r => r.BookID == bookId).ToList();
         }
 
-        public void AddReview(int bookId, string tekst, int rating)
+        public void AddReview(int bookId, string text, int rating)
         {
-            _reviews.Add(new ReviewDTO(_nextId++, bookId, tekst, rating, DateTime.Now));
+            _reviews.Add(new ReviewDTO(_nextId++, bookId, text, rating, DateTime.Now));
         }
 
         public void DeleteReview(int id)

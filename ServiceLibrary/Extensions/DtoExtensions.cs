@@ -13,7 +13,7 @@ namespace ServiceLibrary.Extensions
 
         public static ReviewModel ToModel(this ReviewDTO dto)
         {
-            return new ReviewModel(dto.ReviewID, dto.BookID, dto.Tekst, dto.Rating, dto.Datum);
+            return new ReviewModel(dto.ReviewID, dto.BookID, dto.Text, dto.Rating, dto.Date);
         }
 
         public static UserModel ToModel(this UserDTO dto)

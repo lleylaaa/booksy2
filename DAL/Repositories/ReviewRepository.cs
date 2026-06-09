@@ -27,6 +27,8 @@ namespace DAL.Repositories
                 var reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
+                    // De databasekolommen heten Tekst en Datum; in de rest van de
+                    // code gebruiken we de Engelse namen Text en Date.
                     list.Add(new ReviewDTO(
                         (int)reader["ReviewID"],
                         (int)reader["BoekID"],
@@ -43,7 +45,7 @@ namespace DAL.Repositories
             }
         }
 
-        public void AddReview(int bookId, string tekst, int rating)
+        public void AddReview(int bookId, string text, int rating)
         {
             try
             {
@@ -52,7 +54,7 @@ namespace DAL.Repositories
                 var cmd = new SqlCommand(
                     "INSERT INTO Review (BoekID, Tekst, Rating, Datum) VALUES (@BoekID, @Tekst, @Rating, @Datum)", conn);
                 cmd.Parameters.AddWithValue("@BoekID", bookId);
-                cmd.Parameters.AddWithValue("@Tekst", tekst);
+                cmd.Parameters.AddWithValue("@Tekst", text);
                 cmd.Parameters.AddWithValue("@Rating", rating);
                 cmd.Parameters.AddWithValue("@Datum", DateTime.Now);
                 cmd.ExecuteNonQuery();

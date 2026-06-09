@@ -21,7 +21,7 @@ namespace Booksy.Controllers
             {
                 return RedirectToAction("Details", "Book", new { id = vm.BookID });
             }
-            _reviewService.AddReview(vm.BookID, vm.Tekst ?? "", vm.Rating);
+            _reviewService.AddReview(vm.BookID, vm.Text ?? "", vm.Rating);
             return RedirectToAction("Details", "Book", new { id = vm.BookID });
         }
 

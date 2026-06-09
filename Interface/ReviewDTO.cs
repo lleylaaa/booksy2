@@ -6,17 +6,17 @@ namespace Interface
     {
         public int ReviewID { get; }
         public int BookID { get; }
-        public string Tekst { get; }
+        public string Text { get; }
         public int Rating { get; }
-        public DateTime Datum { get; }
+        public DateTime Date { get; }
 
-        public ReviewDTO(int reviewID, int bookID, string tekst, int rating, DateTime datum)
+        public ReviewDTO(int reviewID, int bookID, string text, int rating, DateTime date)
         {
             ReviewID = reviewID;
             BookID = bookID;
-            Tekst = tekst;
+            Text = text;
             Rating = rating;
-            Datum = datum;
+            Date = date;
         }
     }
 }
