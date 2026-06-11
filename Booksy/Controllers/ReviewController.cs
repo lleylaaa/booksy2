@@ -13,7 +13,7 @@ namespace Booksy.Controllers
             _reviewService = reviewService;
         }
 
-        // FR-08: Review toevoegen
+        // FR-07: Review schrijven bij een boek
         [HttpPost]
         public IActionResult Create(ReviewViewModel vm)
         {

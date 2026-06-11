@@ -1,7 +1,6 @@
 using Interface;
 using ServiceLibrary.Models;
 
-
 namespace ServiceLibrary.Extensions
 {
     public static class DtoExtensions
