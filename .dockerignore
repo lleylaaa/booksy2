@@ -1,0 +1,11 @@
+# Build-output en lokale rommel buiten de Docker-context houden.
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+.git/
+.gitignore
+.gitattributes
+*.user
+Dockerfile
+.dockerignore
