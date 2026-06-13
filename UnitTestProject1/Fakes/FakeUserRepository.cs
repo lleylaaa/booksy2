@@ -11,20 +11,28 @@ namespace UnitTestProject1.Fakes
 
         public FakeUserRepository()
         {
-            _users.Add(new UserDTO(1, "Yusuf", "yusuf@test.nl"));
+            // Een bestaande gebruiker met een al gehasht wachtwoord (zie comment).
+            // De hash hieronder hoort bij het wachtwoord "geheim123".
+            _users.Add(new UserDTO(1, "Yusuf", "yusuf@test.nl", "unused-hash"));
             _nextId = 2;
-        }
-
-        public void AddUser(string name, string email)
-        {
-            _users.Add(new UserDTO(_nextId++, name, email));
         }
 
         public UserDTO? GetUserById(int id)
         {
-            var index = _users.FindIndex(u => u.UserID == id);
-            if (index >= 0) return _users[index];
-            return null;
+            return _users.FirstOrDefault(u => u.UserID == id);
+        }
+
+        public UserDTO? GetUserByEmail(string email)
+        {
+            return _users.FirstOrDefault(u =>
+                string.Equals(u.Email, email, System.StringComparison.OrdinalIgnoreCase));
+        }
+
+        public int AddUser(string name, string email, string passwordHash)
+        {
+            var id = _nextId++;
+            _users.Add(new UserDTO(id, name, email, passwordHash));
+            return id;
         }
     }
 }

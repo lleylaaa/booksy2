@@ -2,6 +2,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceLibrary.Services;
 using ServiceLibrary.Models;
 using UnitTestProject1.Fakes;
+using System;
 
 namespace UnitTestProject1.Services
 {
@@ -49,15 +50,96 @@ namespace UnitTestProject1.Services
         }
 
         [TestMethod]
-        public void AddUser_AddsUserCorrectly()
+        public void Register_CreatesUser_WhenValid()
         {
+            // FR-11: registreren met e-mailadres en wachtwoord.
             // Act
-            _userService.AddUser("Nieuwe Gebruiker", "nieuw@test.nl");
+            var user = _userService.Register("Nieuwe Gebruiker", "nieuw@test.nl", "geheim123");
 
             // Assert
-            var result = _userService.GetUserById(2); // Fake repo wijst ID 2 toe aan de eerste toegevoegde user
+            Assert.IsNotNull(user);
+            Assert.AreEqual("Nieuwe Gebruiker", user.Name);
+            Assert.AreEqual("nieuw@test.nl", user.Email);
+        }
+
+        [TestMethod]
+        public void Register_HashesPassword_NeverStoresPlaintext()
+        {
+            // Act
+            _userService.Register("Nieuwe Gebruiker", "nieuw@test.nl", "geheim123");
+
+            // Assert
+            var stored = _fakeRepo.GetUserByEmail("nieuw@test.nl");
+            Assert.IsNotNull(stored);
+            Assert.AreNotEqual("geheim123", stored.PasswordHash);
+        }
+
+        [TestMethod]
+        public void Register_ThrowsArgumentException_WhenPasswordTooShort()
+        {
+            // B-11-02: het wachtwoord moet minimaal 6 tekens bevatten.
+            try
+            {
+                _userService.Register("Naam", "kort@test.nl", "12345");
+                Assert.Fail("Verwachtte een ArgumentException.");
+            }
+            catch (ArgumentException)
+            {
+                // Test geslaagd
+            }
+        }
+
+        [TestMethod]
+        public void Register_ThrowsArgumentException_WhenEmailAlreadyExists()
+        {
+            // B-11-01: het e-mailadres moet uniek zijn.
+            _userService.Register("Eerste", "dubbel@test.nl", "geheim123");
+            try
+            {
+                _userService.Register("Tweede", "dubbel@test.nl", "geheim123");
+                Assert.Fail("Verwachtte een ArgumentException.");
+            }
+            catch (ArgumentException)
+            {
+                // Test geslaagd
+            }
+        }
+
+        [TestMethod]
+        public void Login_ReturnsUser_WhenCredentialsCorrect()
+        {
+            // Arrange
+            _userService.Register("Inlogger", "login@test.nl", "geheim123");
+
+            // Act
+            var result = _userService.Login("login@test.nl", "geheim123");
+
+            // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Nieuwe Gebruiker", result.Name);
+            Assert.AreEqual("login@test.nl", result.Email);
+        }
+
+        [TestMethod]
+        public void Login_ReturnsNull_WhenPasswordWrong()
+        {
+            // Arrange
+            _userService.Register("Inlogger", "login@test.nl", "geheim123");
+
+            // Act
+            var result = _userService.Login("login@test.nl", "foutwachtwoord");
+
+            // Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        public void Login_ReturnsNull_WhenUserUnknown()
+        {
+            // Act
+            var result = _userService.Login("bestaatniet@test.nl", "geheim123");
+
+            // Assert
+            Assert.IsNull(result);
         }
     }
 }
