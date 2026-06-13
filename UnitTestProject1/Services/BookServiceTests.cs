@@ -3,6 +3,7 @@ using ServiceLibrary.Services;
 using ServiceLibrary.Models;
 using UnitTestProject1.Fakes;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace UnitTestProject1.Services
@@ -12,13 +13,19 @@ namespace UnitTestProject1.Services
     {
         private BookService _bookService = null!;
         private FakeBookRepository _fakeRepo = null!;
+        private FakeAuthorRepository _authorRepo = null!;
+        private FakeGenreRepository _genreRepo = null!;
 
         [TestInitialize]
         public void Setup()
         {
             // Arrange (algemeen voor alle tests)
-            _fakeRepo = new FakeBookRepository();
-            _bookService = new BookService(_fakeRepo);
+            _authorRepo = new FakeAuthorRepository();
+            _genreRepo = new FakeGenreRepository();
+            _fakeRepo = new FakeBookRepository(_authorRepo, _genreRepo);
+            var authorService = new AuthorService(_authorRepo);
+            var genreService = new GenreService(_genreRepo);
+            _bookService = new BookService(_fakeRepo, authorService, genreService);
         }
 
         [TestMethod]
@@ -45,6 +52,7 @@ namespace UnitTestProject1.Services
             Assert.IsNotNull(result);
             Assert.AreEqual(expectedName, result.Name);
             Assert.AreEqual(expectedId, result.BookID);
+            Assert.AreEqual("Auteur 1", result.AuthorName);
         }
 
         [TestMethod]
@@ -64,12 +72,37 @@ namespace UnitTestProject1.Services
         public void AddBook_DoesNotThrow_WhenValid()
         {
             // Act
-            _bookService.AddBook("Nieuw Boek", "Auteur X", "Fantasy");
+            _bookService.AddBook("Nieuw Boek", "Auteur X", new List<string> { "Fantasy" });
 
             // Assert
             var books = _bookService.GetAllBooks();
             Assert.AreEqual(3, books.Count);
             Assert.AreEqual("Nieuw Boek", books.Last().Name);
+            Assert.AreEqual("Auteur X", books.Last().AuthorName);
+        }
+
+        [TestMethod]
+        public void AddBook_LinksMultipleGenres()
+        {
+            // B-15-02: een boek kan aan meerdere genres gekoppeld worden.
+            // Act
+            _bookService.AddBook("Nieuw Boek", "Auteur X", new List<string> { "Roman", "Thriller" });
+
+            // Assert
+            var book = _bookService.GetAllBooks().Last();
+            Assert.AreEqual(2, book.Genres.Count);
+        }
+
+        [TestMethod]
+        public void AddBook_ReusesExistingAuthor()
+        {
+            // Een bestaande auteur mag niet dubbel worden aangemaakt.
+            // Act
+            _bookService.AddBook("Nieuw Boek", "Auteur 1", new List<string>());
+
+            // Assert
+            var book = _bookService.GetAllBooks().Last();
+            Assert.AreEqual(1, book.AuthorID); // hergebruikt id 1 uit de fake
         }
 
         [TestMethod]
@@ -78,7 +111,7 @@ namespace UnitTestProject1.Services
             // Act
             try
             {
-                _bookService.AddBook("", "Auteur X", "Fantasy");
+                _bookService.AddBook("", "Auteur X", new List<string> { "Fantasy" });
                 Assert.Fail("Verwachtte een ArgumentException.");
             }
             catch (ArgumentException)
@@ -90,10 +123,11 @@ namespace UnitTestProject1.Services
         [TestMethod]
         public void AddBook_ThrowsArgumentException_WhenAuthorIsNull()
         {
+            // B-14-02: een boek moet altijd gekoppeld zijn aan een auteur.
             // Act
             try
             {
-                _bookService.AddBook("Nieuw Boek", "", "Fantasy");
+                _bookService.AddBook("Nieuw Boek", "", new List<string> { "Fantasy" });
                 Assert.Fail("Verwachtte een ArgumentException.");
             }
             catch (ArgumentException)
@@ -106,7 +140,7 @@ namespace UnitTestProject1.Services
         public void UpdateBook_UpdatesCorrectly()
         {
             // Act
-            _bookService.UpdateBook(1, "Aangepast Boek", "Auteur 1", "Fictie");
+            _bookService.UpdateBook(1, "Aangepast Boek", "Auteur 1", new List<string> { "Fictie" });
 
             // Assert
             var updatedBook = _bookService.GetBookById(1);

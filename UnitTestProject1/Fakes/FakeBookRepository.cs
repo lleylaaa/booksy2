@@ -6,49 +6,75 @@ namespace UnitTestProject1.Fakes
 {
     public class FakeBookRepository : IBookRepository
     {
-        private List<BookDTO> _books = new();
+        private class StoredBook
+        {
+            public int BookID;
+            public string Name = "";
+            public int AuthorID;
+            public List<int> GenreIDs = new();
+        }
+
+        private List<StoredBook> _books = new();
+        private readonly IAuthorRepository _authors;
+        private readonly IGenreRepository _genres;
         private int _nextId = 1;
 
-        public FakeBookRepository()
+        public FakeBookRepository(IAuthorRepository authors, IGenreRepository genres)
         {
-            _books.Add(new BookDTO(1, "Test Boek 1", "Auteur 1", "Fictie"));
-            _books.Add(new BookDTO(2, "Test Boek 2", "Auteur 2", "Non-Fictie"));
+            _authors = authors;
+            _genres = genres;
+            _books.Add(new StoredBook { BookID = 1, Name = "Test Boek 1", AuthorID = 1, GenreIDs = new List<int> { 1 } });
+            _books.Add(new StoredBook { BookID = 2, Name = "Test Boek 2", AuthorID = 2, GenreIDs = new List<int> { 2 } });
             _nextId = 3;
         }
 
-        public void AddBook(string name, string author, string genre)
+        public void AddBook(string name, int authorId, List<int> genreIds)
         {
-            _books.Add(new BookDTO(_nextId++, name, author, genre));
+            _books.Add(new StoredBook
+            {
+                BookID = _nextId++,
+                Name = name,
+                AuthorID = authorId,
+                GenreIDs = genreIds.ToList()
+            });
         }
 
         public void DeleteBook(int id)
         {
-            var index = _books.FindIndex(b => b.BookID == id);
-            if (index >= 0)
-            {
-                _books.RemoveAt(index);
-            }
+            _books.RemoveAll(b => b.BookID == id);
         }
 
         public List<BookDTO> GetAllBooks()
         {
-            return _books.ToList();
+            return _books.Select(ToDto).ToList();
         }
 
         public BookDTO? GetBookById(int id)
         {
-            var index = _books.FindIndex(b => b.BookID == id);
-            if (index >= 0) return _books[index];
-            return null;
+            var book = _books.FirstOrDefault(b => b.BookID == id);
+            return book == null ? null : ToDto(book);
         }
 
-        public void UpdateBook(int id, string name, string author, string genre)
+        public void UpdateBook(int id, string name, int authorId, List<int> genreIds)
         {
-            var index = _books.FindIndex(b => b.BookID == id);
-            if (index >= 0)
+            var book = _books.FirstOrDefault(b => b.BookID == id);
+            if (book != null)
             {
-                _books[index] = new BookDTO(id, name, author, genre);
+                book.Name = name;
+                book.AuthorID = authorId;
+                book.GenreIDs = genreIds.ToList();
             }
+        }
+
+        private BookDTO ToDto(StoredBook book)
+        {
+            var authorName = _authors.GetAuthorById(book.AuthorID)?.Name ?? "";
+            var genres = book.GenreIDs
+                .Select(_genres.GetGenreById)
+                .Where(g => g != null)
+                .Select(g => g!)
+                .ToList();
+            return new BookDTO(book.BookID, book.Name, book.AuthorID, authorName, genres);
         }
     }
 }
