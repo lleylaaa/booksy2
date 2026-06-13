@@ -23,9 +23,10 @@
                     <span asp-validation-for="Author" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
-                    <label asp-for="Genre" class="form-label">Genre</label>
-                    <input asp-for="Genre" class="form-control" />
-                    <span asp-validation-for="Genre" class="text-danger"></span>
+                    <label asp-for="Genres" class="form-label">Genres</label>
+                    <input asp-for="Genres" class="form-control" placeholder="bijv. Roman, Thriller" />
+                    <small class="text-muted">Meerdere genres scheiden met een komma.</small>
+                    <span asp-validation-for="Genres" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
                     <input type="submit" value="Opslaan" class="btn btn-primary" />

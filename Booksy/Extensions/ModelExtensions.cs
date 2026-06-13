@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Booksy.ViewModels;
 using ServiceLibrary.Models;
 
@@ -7,12 +9,14 @@ namespace Booksy.Extensions
     {
         public static BookViewModel ToViewModel(this BookModel model)
         {
+            var genreNames = model.Genres.Select(g => g.Name).ToList();
             return new BookViewModel
             {
                 BookID = model.BookID,
                 Name = model.Name,
-                Author = model.Author,
-                Genre = model.Genre
+                Author = model.AuthorName,
+                GenreNames = genreNames,
+                Genres = string.Join(", ", genreNames)
             };
         }
 

@@ -16,8 +16,20 @@
                 <dt class="col-sm-3">Auteur</dt>
                 <dd class="col-sm-9">@Model.Book.Author</dd>
 
-                <dt class="col-sm-3">Genre</dt>
-                <dd class="col-sm-9">@Model.Book.Genre</dd>
+                <dt class="col-sm-3">Genres</dt>
+                <dd class="col-sm-9">
+                    @if (!Model.Book.GenreNames.Any())
+                    {
+                        <span class="text-muted">Geen genres</span>
+                    }
+                    else
+                    {
+                        @foreach (var genre in Model.Book.GenreNames)
+                        {
+                            <span class="badge bg-secondary me-1">@genre</span>
+                        }
+                    }
+                </dd>
             </dl>
         </div>
         <div class="card-footer">

@@ -14,6 +14,8 @@ if (useInMemory)
 {
     // Singleton: alle requests delen dezelfde data, zodat toegevoegde boeken
     // en reviews zichtbaar blijven tot de app herstart.
+    builder.Services.AddSingleton<IAuthorRepository, InMemoryAuthorRepository>();
+    builder.Services.AddSingleton<IGenreRepository, InMemoryGenreRepository>();
     builder.Services.AddSingleton<IBookRepository, InMemoryBookRepository>();
     builder.Services.AddSingleton<IUserRepository, InMemoryUserRepository>();
     builder.Services.AddSingleton<IReviewRepository, InMemoryReviewRepository>();
@@ -21,12 +23,16 @@ if (useInMemory)
 else
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+    builder.Services.AddScoped<IAuthorRepository>(_ => new AuthorRepository(connectionString));
+    builder.Services.AddScoped<IGenreRepository>(_ => new GenreRepository(connectionString));
     builder.Services.AddScoped<IBookRepository>(_ => new BookRepository(connectionString));
     builder.Services.AddScoped<IUserRepository>(_ => new UserRepository(connectionString));
     builder.Services.AddScoped<IReviewRepository>(_ => new ReviewRepository(connectionString));
 }
 
 // Services (ServiceLibrary)
+builder.Services.AddScoped<AuthorService>();
+builder.Services.AddScoped<GenreService>();
 builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ReviewService>();
