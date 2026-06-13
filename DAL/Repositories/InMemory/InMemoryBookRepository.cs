@@ -8,25 +8,43 @@ namespace DAL.Repositories.InMemory
     // weer zodra de applicatie herstart.
     //
     // Deze klasse wordt als singleton geregistreerd, dus meerdere requests delen
-    // dezelfde lijst. Daarom beschermen we elke bewerking met een lock.
+    // dezelfde lijst. Daarom beschermen we elke bewerking met een lock. De auteur-
+    // en genrenamen halen we op uit de bijbehorende repositories, want auteur en
+    // genre zijn nu aparte entiteiten.
     public class InMemoryBookRepository : IBookRepository
     {
+        // Interne opslag van een boek: het boek bewaart alleen de id's van zijn
+        // auteur en genres, de namen leiden we af via de andere repositories.
+        private class StoredBook
+        {
+            public int BookID;
+            public string Name = "";
+            public int AuthorID;
+            public List<int> GenreIDs = new();
+        }
+
         private readonly object _lock = new();
-        private readonly List<BookDTO> _books = new();
+        private readonly List<StoredBook> _books = new();
+        private readonly IAuthorRepository _authors;
+        private readonly IGenreRepository _genres;
         private int _nextId = 1;
 
-        public InMemoryBookRepository()
+        public InMemoryBookRepository(IAuthorRepository authors, IGenreRepository genres)
         {
-            AddBook("De ontdekking van de hemel", "Harry Mulisch", "Roman");
-            AddBook("Het diner", "Herman Koch", "Thriller");
-            AddBook("De avonden", "Gerard Reve", "Klassieker");
+            _authors = authors;
+            _genres = genres;
+
+            // De seed-auteurs/genres staan op id 1, 2 en 3 in hun repositories.
+            AddBook("De ontdekking van de hemel", 1, new List<int> { 1 });
+            AddBook("Het diner", 2, new List<int> { 2 });
+            AddBook("De avonden", 3, new List<int> { 3 });
         }
 
         public List<BookDTO> GetAllBooks()
         {
             lock (_lock)
             {
-                return _books.ToList();
+                return _books.Select(ToDto).ToList();
             }
         }
 
@@ -34,26 +52,35 @@ namespace DAL.Repositories.InMemory
         {
             lock (_lock)
             {
-                return _books.FirstOrDefault(b => b.BookID == id);
+                var book = _books.FirstOrDefault(b => b.BookID == id);
+                return book == null ? null : ToDto(book);
             }
         }
 
-        public void AddBook(string name, string author, string genre)
+        public void AddBook(string name, int authorId, List<int> genreIds)
         {
             lock (_lock)
             {
-                _books.Add(new BookDTO(_nextId++, name, author, genre));
-            }
-        }
-
-        public void UpdateBook(int id, string name, string author, string genre)
-        {
-            lock (_lock)
-            {
-                var index = _books.FindIndex(b => b.BookID == id);
-                if (index >= 0)
+                _books.Add(new StoredBook
                 {
-                    _books[index] = new BookDTO(id, name, author, genre);
+                    BookID = _nextId++,
+                    Name = name,
+                    AuthorID = authorId,
+                    GenreIDs = genreIds.ToList()
+                });
+            }
+        }
+
+        public void UpdateBook(int id, string name, int authorId, List<int> genreIds)
+        {
+            lock (_lock)
+            {
+                var book = _books.FirstOrDefault(b => b.BookID == id);
+                if (book != null)
+                {
+                    book.Name = name;
+                    book.AuthorID = authorId;
+                    book.GenreIDs = genreIds.ToList();
                 }
             }
         }
@@ -64,6 +91,17 @@ namespace DAL.Repositories.InMemory
             {
                 _books.RemoveAll(b => b.BookID == id);
             }
+        }
+
+        private BookDTO ToDto(StoredBook book)
+        {
+            var authorName = _authors.GetAuthorById(book.AuthorID)?.Name ?? "";
+            var genres = book.GenreIDs
+                .Select(_genres.GetGenreById)
+                .Where(g => g != null)
+                .Select(g => g!)
+                .ToList();
+            return new BookDTO(book.BookID, book.Name, book.AuthorID, authorName, genres);
         }
     }
 }
