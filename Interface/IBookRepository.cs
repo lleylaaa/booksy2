@@ -6,8 +6,8 @@ namespace Interface
     {
         List<BookDTO> GetAllBooks();
         BookDTO? GetBookById(int id);
-        void AddBook(string name, string author, string genre);
-        void UpdateBook(int id, string name, string author, string genre);
+        void AddBook(string name, int authorId, List<int> genreIds);
+        void UpdateBook(int id, string name, int authorId, List<int> genreIds);
         void DeleteBook(int id);
     }
 }

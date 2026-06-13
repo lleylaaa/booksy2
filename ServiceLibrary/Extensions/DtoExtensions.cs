@@ -1,3 +1,4 @@
+using System.Linq;
 using Interface;
 using ServiceLibrary.Models;
 
@@ -7,7 +8,22 @@ namespace ServiceLibrary.Extensions
     {
         public static BookModel ToModel(this BookDTO dto)
         {
-            return new BookModel(dto.BookID, dto.Name, dto.Author, dto.Genre);
+            return new BookModel(
+                dto.BookID,
+                dto.Name,
+                dto.AuthorID,
+                dto.AuthorName,
+                dto.Genres.Select(g => g.ToModel()).ToList());
+        }
+
+        public static AuthorModel ToModel(this AuthorDTO dto)
+        {
+            return new AuthorModel(dto.AuthorID, dto.Name);
+        }
+
+        public static GenreModel ToModel(this GenreDTO dto)
+        {
+            return new GenreModel(dto.GenreID, dto.Name);
         }
 
         public static ReviewModel ToModel(this ReviewDTO dto)
