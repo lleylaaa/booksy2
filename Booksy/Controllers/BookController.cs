@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLibrary.Services;
 using Booksy.ViewModels;
@@ -7,6 +8,9 @@ using System.Linq;
 
 namespace Booksy.Controllers
 {
+    // K-12-01: de boekpagina's zijn beveiligd. Niet ingelogd? Dan stuurt de
+    // cookie-authenticatie door naar de loginpagina.
+    [Authorize]
     public class BookController : Controller
     {
         private readonly BookService _bookService;

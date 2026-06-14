@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLibrary.Services;
 using Booksy.ViewModels;
 
 namespace Booksy.Controllers
 {
+    [Authorize]
     public class ReviewController : Controller
     {
         private readonly ReviewService _reviewService;
