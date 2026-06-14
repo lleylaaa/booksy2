@@ -12,6 +12,8 @@ namespace UnitTestProject1.Fakes
             public string Name = "";
             public int AuthorID;
             public List<int> GenreIDs = new();
+            public string ReadingStatus = "Wil ik lezen";
+            public string? CoverImage;
         }
 
         private List<StoredBook> _books = new();
@@ -23,19 +25,21 @@ namespace UnitTestProject1.Fakes
         {
             _authors = authors;
             _genres = genres;
-            _books.Add(new StoredBook { BookID = 1, Name = "Test Boek 1", AuthorID = 1, GenreIDs = new List<int> { 1 } });
-            _books.Add(new StoredBook { BookID = 2, Name = "Test Boek 2", AuthorID = 2, GenreIDs = new List<int> { 2 } });
+            _books.Add(new StoredBook { BookID = 1, Name = "Test Boek 1", AuthorID = 1, GenreIDs = new List<int> { 1 }, ReadingStatus = "Gelezen" });
+            _books.Add(new StoredBook { BookID = 2, Name = "Test Boek 2", AuthorID = 2, GenreIDs = new List<int> { 2 }, ReadingStatus = "Bezig" });
             _nextId = 3;
         }
 
-        public void AddBook(string name, int authorId, List<int> genreIds)
+        public void AddBook(string name, int authorId, List<int> genreIds, string readingStatus, string? coverImage)
         {
             _books.Add(new StoredBook
             {
                 BookID = _nextId++,
                 Name = name,
                 AuthorID = authorId,
-                GenreIDs = genreIds.ToList()
+                GenreIDs = genreIds.ToList(),
+                ReadingStatus = readingStatus,
+                CoverImage = coverImage
             });
         }
 
@@ -55,7 +59,7 @@ namespace UnitTestProject1.Fakes
             return book == null ? null : ToDto(book);
         }
 
-        public void UpdateBook(int id, string name, int authorId, List<int> genreIds)
+        public void UpdateBook(int id, string name, int authorId, List<int> genreIds, string readingStatus, string? coverImage)
         {
             var book = _books.FirstOrDefault(b => b.BookID == id);
             if (book != null)
@@ -63,6 +67,8 @@ namespace UnitTestProject1.Fakes
                 book.Name = name;
                 book.AuthorID = authorId;
                 book.GenreIDs = genreIds.ToList();
+                book.ReadingStatus = readingStatus;
+                book.CoverImage = coverImage;
             }
         }
 
@@ -74,7 +80,8 @@ namespace UnitTestProject1.Fakes
                 .Where(g => g != null)
                 .Select(g => g!)
                 .ToList();
-            return new BookDTO(book.BookID, book.Name, book.AuthorID, authorName, genres);
+            return new BookDTO(book.BookID, book.Name, book.AuthorID, authorName, genres,
+                book.ReadingStatus, book.CoverImage);
         }
     }
 }

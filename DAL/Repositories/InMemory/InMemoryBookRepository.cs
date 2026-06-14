@@ -21,6 +21,8 @@ namespace DAL.Repositories.InMemory
             public string Name = "";
             public int AuthorID;
             public List<int> GenreIDs = new();
+            public string ReadingStatus = "Wil ik lezen";
+            public string? CoverImage;
         }
 
         private readonly object _lock = new();
@@ -35,9 +37,9 @@ namespace DAL.Repositories.InMemory
             _genres = genres;
 
             // De seed-auteurs/genres staan op id 1, 2 en 3 in hun repositories.
-            AddBook("De ontdekking van de hemel", 1, new List<int> { 1 });
-            AddBook("Het diner", 2, new List<int> { 2 });
-            AddBook("De avonden", 3, new List<int> { 3 });
+            AddBook("De ontdekking van de hemel", 1, new List<int> { 1 }, "Gelezen", null);
+            AddBook("Het diner", 2, new List<int> { 2 }, "Bezig", null);
+            AddBook("De avonden", 3, new List<int> { 3 }, "Wil ik lezen", null);
         }
 
         public List<BookDTO> GetAllBooks()
@@ -57,7 +59,7 @@ namespace DAL.Repositories.InMemory
             }
         }
 
-        public void AddBook(string name, int authorId, List<int> genreIds)
+        public void AddBook(string name, int authorId, List<int> genreIds, string readingStatus, string? coverImage)
         {
             lock (_lock)
             {
@@ -66,12 +68,14 @@ namespace DAL.Repositories.InMemory
                     BookID = _nextId++,
                     Name = name,
                     AuthorID = authorId,
-                    GenreIDs = genreIds.ToList()
+                    GenreIDs = genreIds.ToList(),
+                    ReadingStatus = readingStatus,
+                    CoverImage = coverImage
                 });
             }
         }
 
-        public void UpdateBook(int id, string name, int authorId, List<int> genreIds)
+        public void UpdateBook(int id, string name, int authorId, List<int> genreIds, string readingStatus, string? coverImage)
         {
             lock (_lock)
             {
@@ -81,6 +85,8 @@ namespace DAL.Repositories.InMemory
                     book.Name = name;
                     book.AuthorID = authorId;
                     book.GenreIDs = genreIds.ToList();
+                    book.ReadingStatus = readingStatus;
+                    book.CoverImage = coverImage;
                 }
             }
         }
@@ -101,7 +107,8 @@ namespace DAL.Repositories.InMemory
                 .Where(g => g != null)
                 .Select(g => g!)
                 .ToList();
-            return new BookDTO(book.BookID, book.Name, book.AuthorID, authorName, genres);
+            return new BookDTO(book.BookID, book.Name, book.AuthorID, authorName, genres,
+                book.ReadingStatus, book.CoverImage);
         }
     }
 }

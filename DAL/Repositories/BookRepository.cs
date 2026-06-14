@@ -22,7 +22,7 @@ namespace DAL.Repositories
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
                 var cmd = new SqlCommand(
-                    @"SELECT b.BoekID, b.Naam, b.AuteurID, a.Naam AS AuteurNaam
+                    @"SELECT b.BoekID, b.Naam, b.AuteurID, b.Leesstatus, b.Omslag, a.Naam AS AuteurNaam
                       FROM Book b
                       JOIN Author a ON a.AuteurID = b.AuteurID", conn);
                 var reader = cmd.ExecuteReader();
@@ -32,7 +32,10 @@ namespace DAL.Repositories
                         (int)reader["BoekID"],
                         reader["Naam"].ToString() ?? "",
                         (int)reader["AuteurID"],
-                        reader["AuteurNaam"].ToString() ?? ""
+                        reader["AuteurNaam"].ToString() ?? "",
+                        null,
+                        reader["Leesstatus"].ToString() ?? "Wil ik lezen",
+                        reader["Omslag"] == DBNull.Value ? null : reader["Omslag"].ToString()
                     ));
                 }
                 reader.Close();
@@ -53,7 +56,7 @@ namespace DAL.Repositories
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
                 var cmd = new SqlCommand(
-                    @"SELECT b.BoekID, b.Naam, b.AuteurID, a.Naam AS AuteurNaam
+                    @"SELECT b.BoekID, b.Naam, b.AuteurID, b.Leesstatus, b.Omslag, a.Naam AS AuteurNaam
                       FROM Book b
                       JOIN Author a ON a.AuteurID = b.AuteurID
                       WHERE b.BoekID = @id", conn);
@@ -66,7 +69,10 @@ namespace DAL.Repositories
                         (int)reader["BoekID"],
                         reader["Naam"].ToString() ?? "",
                         (int)reader["AuteurID"],
-                        reader["AuteurNaam"].ToString() ?? ""
+                        reader["AuteurNaam"].ToString() ?? "",
+                        null,
+                        reader["Leesstatus"].ToString() ?? "Wil ik lezen",
+                        reader["Omslag"] == DBNull.Value ? null : reader["Omslag"].ToString()
                     );
                 }
                 reader.Close();
@@ -80,16 +86,18 @@ namespace DAL.Repositories
             }
         }
 
-        public void AddBook(string name, int authorId, List<int> genreIds)
+        public void AddBook(string name, int authorId, List<int> genreIds, string readingStatus, string? coverImage)
         {
             try
             {
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
                 var cmd = new SqlCommand(
-                    "INSERT INTO Book (Naam, AuteurID) OUTPUT INSERTED.BoekID VALUES (@Naam, @AuteurID)", conn);
+                    "INSERT INTO Book (Naam, AuteurID, Leesstatus, Omslag) OUTPUT INSERTED.BoekID VALUES (@Naam, @AuteurID, @Leesstatus, @Omslag)", conn);
                 cmd.Parameters.AddWithValue("@Naam", name);
                 cmd.Parameters.AddWithValue("@AuteurID", authorId);
+                cmd.Parameters.AddWithValue("@Leesstatus", readingStatus);
+                cmd.Parameters.AddWithValue("@Omslag", (object?)coverImage ?? DBNull.Value);
                 var bookId = (int)cmd.ExecuteScalar();
                 LinkGenres(conn, bookId, genreIds);
             }
@@ -99,16 +107,18 @@ namespace DAL.Repositories
             }
         }
 
-        public void UpdateBook(int id, string name, int authorId, List<int> genreIds)
+        public void UpdateBook(int id, string name, int authorId, List<int> genreIds, string readingStatus, string? coverImage)
         {
             try
             {
                 using var conn = new SqlConnection(_connectionString);
                 conn.Open();
                 var cmd = new SqlCommand(
-                    "UPDATE Book SET Naam=@Naam, AuteurID=@AuteurID WHERE BoekID=@id", conn);
+                    "UPDATE Book SET Naam=@Naam, AuteurID=@AuteurID, Leesstatus=@Leesstatus, Omslag=@Omslag WHERE BoekID=@id", conn);
                 cmd.Parameters.AddWithValue("@Naam", name);
                 cmd.Parameters.AddWithValue("@AuteurID", authorId);
+                cmd.Parameters.AddWithValue("@Leesstatus", readingStatus);
+                cmd.Parameters.AddWithValue("@Omslag", (object?)coverImage ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@id", id);
                 cmd.ExecuteNonQuery();
 
