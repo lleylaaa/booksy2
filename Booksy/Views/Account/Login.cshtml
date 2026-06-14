@@ -1,0 +1,35 @@
+@model Booksy.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Inloggen";
+}
+
+<div class="container mt-4">
+    <h1>Inloggen</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Login" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label">E-mailadres</label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label">Wachtwoord</label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <input type="submit" value="Inloggen" class="btn btn-primary" />
+                </div>
+            </form>
+            <p>Nog geen account? <a asp-action="Register">Registreren</a></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
