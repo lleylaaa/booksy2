@@ -1,6 +1,7 @@
 using DAL.Repositories;
 using DAL.Repositories.InMemory;
 using Interface;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using ServiceLibrary.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -37,9 +38,32 @@ builder.Services.AddScoped<BookService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ReviewService>();
 
+// FR-11/FR-12: inloggen via een cookie. Niet ingelogd? Dan stuurt de app door
+// naar de loginpagina; uitloggen verwijdert de cookie.
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Login";
+    });
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// In de in-memory modus is de database leeg na een herstart. We maken daarom
+// een vaste gebruiker aan via de service, zodat het wachtwoord netjes gehasht
+// wordt en je direct kunt inloggen om de app te tonen.
+if (useInMemory)
+{
+    using var scope = app.Services.CreateScope();
+    var userService = scope.ServiceProvider.GetRequiredService<UserService>();
+    if (userService.Login("leyla@booksy.nl", "geheim123") == null)
+    {
+        userService.Register("Leyla", "leyla@booksy.nl", "geheim123");
+    }
+}
 
 if (!app.Environment.IsDevelopment())
 {
@@ -50,6 +74,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
