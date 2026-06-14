@@ -34,7 +34,8 @@ namespace ServiceLibrary.Services
             return dto.ToModel();
         }
 
-        public void AddBook(string name, string authorName, IEnumerable<string> genreNames)
+        public void AddBook(string name, string authorName, IEnumerable<string> genreNames,
+            string readingStatus = "Wil ik lezen", string? coverImage = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Titel is verplicht.");
@@ -44,10 +45,11 @@ namespace ServiceLibrary.Services
 
             var authorId = _authors.GetOrCreateAuthor(authorName);
             var genreIds = ResolveGenres(genreNames);
-            _repo.AddBook(name, authorId, genreIds);
+            _repo.AddBook(name, authorId, genreIds, NormalizeStatus(readingStatus), coverImage);
         }
 
-        public void UpdateBook(int id, string name, string authorName, IEnumerable<string> genreNames)
+        public void UpdateBook(int id, string name, string authorName, IEnumerable<string> genreNames,
+            string readingStatus = "Wil ik lezen", string? coverImage = null)
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException("Titel is verplicht.");
@@ -56,7 +58,16 @@ namespace ServiceLibrary.Services
 
             var authorId = _authors.GetOrCreateAuthor(authorName);
             var genreIds = ResolveGenres(genreNames);
-            _repo.UpdateBook(id, name, authorId, genreIds);
+            _repo.UpdateBook(id, name, authorId, genreIds, NormalizeStatus(readingStatus), coverImage);
+        }
+
+        // B-10-02: een boek moet altijd een status hebben. Een onbekende of lege
+        // waarde valt terug op "Wil ik lezen", zodat de status altijd geldig is.
+        private static string NormalizeStatus(string readingStatus)
+        {
+            return ReadingStatusExtensions.IsValid(readingStatus)
+                ? readingStatus
+                : ReadingStatus.WilIkLezen.ToText();
         }
 
         public void DeleteBook(int id)

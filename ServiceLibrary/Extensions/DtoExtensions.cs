@@ -13,7 +13,9 @@ namespace ServiceLibrary.Extensions
                 dto.Name,
                 dto.AuthorID,
                 dto.AuthorName,
-                dto.Genres.Select(g => g.ToModel()).ToList());
+                dto.Genres.Select(g => g.ToModel()).ToList(),
+                ReadingStatusExtensions.FromText(dto.ReadingStatus),
+                dto.CoverImage);
         }
 
         public static AuthorModel ToModel(this AuthorDTO dto)
