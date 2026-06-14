@@ -20,6 +20,7 @@
                 <th>Titel</th>
                 <th>Auteur</th>
                 <th>Genres</th>
+                <th>Leesstatus</th>
                 <th>Acties</th>
             </tr>
         </thead>
@@ -35,6 +36,7 @@
                             <span class="badge bg-secondary me-1">@genre</span>
                         }
                     </td>
+                    <td><span class="badge bg-info text-dark">@item.ReadingStatus</span></td>
                     <td>
                         <a asp-action="Details" asp-route-id="@item.BookID">Details</a> |
                         <a asp-action="Edit" asp-route-id="@item.BookID">Bewerken</a> |

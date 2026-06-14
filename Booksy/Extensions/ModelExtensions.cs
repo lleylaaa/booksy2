@@ -16,7 +16,9 @@ namespace Booksy.Extensions
                 Name = model.Name,
                 Author = model.AuthorName,
                 GenreNames = genreNames,
-                Genres = string.Join(", ", genreNames)
+                Genres = string.Join(", ", genreNames),
+                ReadingStatus = model.ReadingStatus.ToText(),
+                CoverImage = model.CoverImage
             };
         }
 

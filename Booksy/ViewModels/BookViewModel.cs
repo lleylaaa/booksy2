@@ -20,5 +20,11 @@ namespace Booksy.ViewModels
         public string? Genres { get; set; }
 
         public List<string> GenreNames { get; set; } = new();
+
+        // FR-10: leesstatus. B-10-02: altijd een waarde, daarom een standaard.
+        public string ReadingStatus { get; set; } = "Wil ik lezen";
+
+        // FR-13: verwijzing naar de omslagafbeelding (mag leeg zijn).
+        public string? CoverImage { get; set; }
     }
 }

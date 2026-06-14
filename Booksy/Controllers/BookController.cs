@@ -60,7 +60,7 @@ namespace Booksy.Controllers
             {
                 return View(vm);
             }
-            _bookService.AddBook(vm.Name ?? "", vm.Author ?? "", SplitGenres(vm.Genres));
+            _bookService.AddBook(vm.Name ?? "", vm.Author ?? "", SplitGenres(vm.Genres), vm.ReadingStatus, vm.CoverImage);
             return RedirectToAction("Index");
         }
 
@@ -79,7 +79,7 @@ namespace Booksy.Controllers
             {
                 return View(vm);
             }
-            _bookService.UpdateBook(vm.BookID, vm.Name ?? "", vm.Author ?? "", SplitGenres(vm.Genres));
+            _bookService.UpdateBook(vm.BookID, vm.Name ?? "", vm.Author ?? "", SplitGenres(vm.Genres), vm.ReadingStatus, vm.CoverImage);
             // K-04-01: Na het opslaan wordt de gebruiker teruggestuurd naar de detailpagina.
             return RedirectToAction("Details", new { id = vm.BookID });
         }

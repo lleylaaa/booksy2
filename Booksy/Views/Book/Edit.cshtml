@@ -29,6 +29,14 @@
                     <span asp-validation-for="Genres" class="text-danger"></span>
                 </div>
                 <div class="mb-3">
+                    <label asp-for="ReadingStatus" class="form-label">Leesstatus</label>
+                    <select asp-for="ReadingStatus" class="form-select">
+                        <option value="Wil ik lezen">Wil ik lezen</option>
+                        <option value="Bezig">Bezig</option>
+                        <option value="Gelezen">Gelezen</option>
+                    </select>
+                </div>
+                <div class="mb-3">
                     <input type="submit" value="Opslaan" class="btn btn-primary" />
                     <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
                 </div>
