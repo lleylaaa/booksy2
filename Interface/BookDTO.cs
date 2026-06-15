@@ -11,16 +11,26 @@ namespace Interface
         public int AuthorID { get; }
         public string AuthorName { get; }
 
-        // B-15-02: een boek kan aan meerdere genres gekoppeld zijn.
+        // B-15-02: een boek kan aan meerdere genres gekoppeld worden.
         public List<GenreDTO> Genres { get; }
 
-        public BookDTO(int bookID, string name, int authorID, string authorName, List<GenreDTO>? genres = null)
+        // FR-10: leesstatus als tekst ("Wil ik lezen" / "Bezig" / "Gelezen").
+        public string ReadingStatus { get; }
+
+        // FR-13: verwijzing (pad/URL) naar de omslagafbeelding. Mag leeg zijn;
+        // dan toont de UI een standaardafbeelding.
+        public string? CoverImage { get; }
+
+        public BookDTO(int bookID, string name, int authorID, string authorName,
+            List<GenreDTO>? genres = null, string readingStatus = "Wil ik lezen", string? coverImage = null)
         {
             BookID = bookID;
             Name = name;
             AuthorID = authorID;
             AuthorName = authorName;
             Genres = genres ?? new List<GenreDTO>();
+            ReadingStatus = readingStatus;
+            CoverImage = coverImage;
         }
     }
 }
