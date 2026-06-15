@@ -137,6 +137,42 @@ namespace UnitTestProject1.Services
         }
 
         [TestMethod]
+        public void AddBook_StoresReadingStatus()
+        {
+            // FR-10: leesstatus wordt bewaard bij het boek.
+            _bookService.AddBook("Nieuw Boek", "Auteur X", new List<string>(), "Gelezen", null);
+            var book = _bookService.GetAllBooks().Last();
+            Assert.AreEqual(ServiceLibrary.Models.ReadingStatus.Gelezen, book.ReadingStatus);
+        }
+
+        [TestMethod]
+        public void AddBook_FallsBackToWilIkLezen_WhenStatusInvalid()
+        {
+            // B-10-02: een boek moet altijd een geldige status hebben.
+            _bookService.AddBook("Nieuw Boek", "Auteur X", new List<string>(), "onzin", null);
+            var book = _bookService.GetAllBooks().Last();
+            Assert.AreEqual(ServiceLibrary.Models.ReadingStatus.WilIkLezen, book.ReadingStatus);
+        }
+
+        [TestMethod]
+        public void AddBook_StoresCoverImageReference()
+        {
+            // FR-13: de verwijzing naar de omslag wordt bewaard.
+            _bookService.AddBook("Nieuw Boek", "Auteur X", new List<string>(), "Bezig", "https://example.com/x.jpg");
+            var book = _bookService.GetAllBooks().Last();
+            Assert.AreEqual("https://example.com/x.jpg", book.CoverImage);
+        }
+
+        [TestMethod]
+        public void AddBook_LeavesCoverNull_WhenNotProvided()
+        {
+            // B-13-01: zonder omslag blijft de verwijzing leeg (UI toont dan een standaard).
+            _bookService.AddBook("Nieuw Boek", "Auteur X", new List<string>(), "Bezig", null);
+            var book = _bookService.GetAllBooks().Last();
+            Assert.IsNull(book.CoverImage);
+        }
+
+        [TestMethod]
         public void UpdateBook_UpdatesCorrectly()
         {
             // Act
