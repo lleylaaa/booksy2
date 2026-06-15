@@ -17,6 +17,7 @@
     <table class="table table-striped table-bordered">
         <thead class="table-light">
             <tr>
+                <th>Omslag</th>
                 <th>Titel</th>
                 <th>Auteur</th>
                 <th>Genres</th>
@@ -28,6 +29,7 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td><img src="@item.CoverImageUrl" alt="Omslag" style="height: 60px;" class="rounded border" /></td>
                     <td>@item.Name</td>
                     <td>@item.Author</td>
                     <td>

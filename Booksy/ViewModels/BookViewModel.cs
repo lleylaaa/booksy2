@@ -26,5 +26,9 @@ namespace Booksy.ViewModels
 
         // FR-13: verwijzing naar de omslagafbeelding (mag leeg zijn).
         public string? CoverImage { get; set; }
+
+        // B-13-01: is er geen omslag, dan tonen we een standaardafbeelding.
+        public string CoverImageUrl =>
+            string.IsNullOrWhiteSpace(CoverImage) ? "/images/no-cover.svg" : CoverImage;
     }
 }

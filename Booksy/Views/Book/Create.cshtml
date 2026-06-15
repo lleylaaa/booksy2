@@ -36,6 +36,11 @@
                     </select>
                 </div>
                 <div class="mb-3">
+                    <label asp-for="CoverImage" class="form-label">Omslagafbeelding (URL)</label>
+                    <input asp-for="CoverImage" class="form-control" placeholder="https://..." />
+                    <small class="text-muted">Laat leeg voor een standaardafbeelding.</small>
+                </div>
+                <div class="mb-3">
                     <input type="submit" value="Opslaan" class="btn btn-primary" />
                     <a asp-action="Index" class="btn btn-secondary">Annuleren</a>
                 </div>
