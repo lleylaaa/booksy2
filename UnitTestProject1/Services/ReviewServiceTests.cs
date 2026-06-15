@@ -54,6 +54,26 @@ namespace UnitTestProject1.Services
         }
 
         [TestMethod]
+        public void Reviews_HaveADate()
+        {
+            // Elke review heeft een datum waarop hij geplaatst is.
+            var reviews = _reviewService.GetReviewsByBookId(1);
+            foreach (var review in reviews)
+            {
+                Assert.AreNotEqual(default(System.DateTime), review.Date);
+            }
+        }
+
+        [TestMethod]
+        public void AddReview_SetsDate()
+        {
+            // Een nieuw toegevoegde review krijgt een datum.
+            _reviewService.AddReview(1, "Heel goed boek", 4);
+            var added = _reviewService.GetReviewsByBookId(1)[2];
+            Assert.AreNotEqual(default(System.DateTime), added.Date);
+        }
+
+        [TestMethod]
         public void AddReview_ThrowsArgumentException_WhenTekstIsEmpty()
         {
             // Act
