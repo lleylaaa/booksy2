@@ -1,0 +1,226 @@
+/* ==========================================================================
+   Booksy - poepig & grappig thema 💩📖
+   Een vrolijke skin bovenop Bootstrap. Past kleuren, vormen en sfeer aan;
+   de teksten in de views blijven gewoon hetzelfde.
+   ========================================================================== */
+
+:root {
+    --booksy-beige: #f6ead7;
+    --booksy-beige-donker: #ecd9b8;
+    --booksy-bruin: #7a5230;
+    --booksy-bruin-licht: #a9743f;
+    --booksy-goud: #e0a83b;
+    --booksy-goud-donker: #c98e1f;
+    --booksy-creme: #fffaf0;
+    --booksy-groen: #7f9b5e;
+    --booksy-rood: #c4654f;
+}
+
+body {
+    background-color: var(--booksy-beige);
+    /* zachte stippeltjes voor een speels tintje */
+    background-image: radial-gradient(var(--booksy-beige-donker) 1.5px, transparent 1.5px);
+    background-size: 22px 22px;
+    color: var(--booksy-bruin);
+    font-family: "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
+}
+
+/* ---- Navbar ---- */
+.navbar {
+    background-color: var(--booksy-goud) !important;
+    border-bottom: 4px dashed var(--booksy-bruin) !important;
+    box-shadow: 0 4px 0 rgba(122, 82, 48, 0.15);
+}
+
+.navbar-brand {
+    font-size: 1.6rem;
+    color: var(--booksy-bruin) !important;
+    letter-spacing: 0.5px;
+}
+
+.navbar-brand::before {
+    content: "💩 ";
+}
+
+.navbar-brand::after {
+    content: " 📖";
+}
+
+.navbar .nav-link {
+    color: var(--booksy-bruin) !important;
+    font-weight: bold;
+    border-radius: 999px;
+    padding: 0.25rem 0.8rem !important;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+}
+
+.navbar .nav-link:hover {
+    background-color: var(--booksy-creme);
+    transform: translateY(-2px) rotate(-2deg);
+}
+
+/* ---- Koppen ---- */
+h1, h2, h3 {
+    color: var(--booksy-bruin);
+    font-weight: bold;
+}
+
+h1 {
+    text-shadow: 2px 2px 0 var(--booksy-goud);
+}
+
+/* ---- Kaarten ---- */
+.card {
+    background-color: var(--booksy-creme);
+    border: 3px solid var(--booksy-bruin);
+    border-radius: 20px;
+    box-shadow: 5px 5px 0 rgba(122, 82, 48, 0.25);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: rotate(-0.4deg);
+    transition: transform 0.15s ease;
+}
+
+.card-footer,
+.card-header {
+    background-color: var(--booksy-beige);
+    border-color: var(--booksy-bruin);
+}
+
+/* ---- Knoppen ---- */
+.btn {
+    border-radius: 999px;
+    font-weight: bold;
+    border-width: 2px;
+    border-color: var(--booksy-bruin);
+    box-shadow: 3px 3px 0 rgba(122, 82, 48, 0.3);
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px) rotate(-1deg);
+    box-shadow: 4px 5px 0 rgba(122, 82, 48, 0.35);
+}
+
+.btn:active {
+    transform: translatey(2px);
+    box-shadow: 1px 1px 0 rgba(122, 82, 48, 0.3);
+}
+
+.btn-primary {
+    background-color: var(--booksy-goud);
+    color: var(--booksy-bruin);
+}
+
+.btn-primary:hover {
+    background-color: var(--booksy-goud-donker);
+    color: var(--booksy-bruin);
+}
+
+.btn-warning {
+    background-color: var(--booksy-bruin-licht);
+    color: var(--booksy-creme);
+}
+
+.btn-danger {
+    background-color: var(--booksy-rood);
+    color: #fff;
+}
+
+.btn-secondary,
+.btn-outline-primary {
+    background-color: var(--booksy-beige-donker);
+    color: var(--booksy-bruin);
+}
+
+/* link-knop (uitloggen) in de navbar weer plat maken */
+.navbar .btn-link {
+    box-shadow: none;
+    border: none;
+    text-decoration: none;
+}
+
+.navbar .btn-link:hover {
+    transform: translateY(-2px) rotate(-2deg);
+}
+
+/* ---- Tabel ---- */
+.table {
+    background-color: var(--booksy-creme);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid var(--booksy-bruin);
+}
+
+.table > thead {
+    background-color: var(--booksy-goud);
+    color: var(--booksy-bruin);
+}
+
+.table > thead th {
+    border-bottom: 3px solid var(--booksy-bruin) !important;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: var(--booksy-beige);
+    color: var(--booksy-bruin);
+}
+
+.table-striped > tbody > tr:hover > * {
+    background-color: var(--booksy-beige-donker);
+}
+
+/* ---- Badges ---- */
+.badge {
+    border-radius: 999px;
+    font-size: 0.78rem;
+    padding: 0.4em 0.7em;
+}
+
+.badge.bg-secondary {
+    background-color: var(--booksy-groen) !important;
+}
+
+.badge.bg-info {
+    background-color: var(--booksy-goud) !important;
+    color: var(--booksy-bruin) !important;
+}
+
+/* ---- Formulieren ---- */
+.form-control,
+.form-select {
+    border: 2px solid var(--booksy-bruin-licht);
+    border-radius: 12px;
+    background-color: var(--booksy-creme);
+    color: var(--booksy-bruin);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--booksy-goud-donker);
+    box-shadow: 0 0 0 0.25rem rgba(224, 168, 59, 0.35);
+}
+
+.form-label {
+    font-weight: bold;
+    color: var(--booksy-bruin);
+}
+
+/* boekomslagen krijgen een klein randje */
+img.rounded {
+    border: 2px solid var(--booksy-bruin) !important;
+}
+
+/* validatie/foutmeldingen iets warmer */
+.text-danger {
+    color: var(--booksy-rood) !important;
+}
+
+.alert-warning {
+    background-color: var(--booksy-beige-donker);
+    border: 2px dashed var(--booksy-bruin);
+    border-radius: 14px;
+    color: var(--booksy-bruin);
+}
