@@ -1,182 +1,181 @@
 /* ==========================================================================
-   Booksy - poepig & grappig thema 💩📖
-   Een vrolijke skin bovenop Bootstrap. Past kleuren, vormen en sfeer aan;
-   de teksten in de views blijven gewoon hetzelfde.
+   Booksy - thema
+   Een nette, warme skin bovenop Bootstrap. Rustige aardetinten en subtiele
+   accenten; de teksten in de views blijven ongewijzigd.
    ========================================================================== */
 
 :root {
-    --booksy-beige: #f6ead7;
-    --booksy-beige-donker: #ecd9b8;
-    --booksy-bruin: #7a5230;
-    --booksy-bruin-licht: #a9743f;
-    --booksy-goud: #e0a83b;
-    --booksy-goud-donker: #c98e1f;
-    --booksy-creme: #fffaf0;
-    --booksy-groen: #7f9b5e;
-    --booksy-rood: #c4654f;
+    --booksy-bg: #f7f4ef;
+    --booksy-surface: #ffffff;
+    --booksy-ink: #2f2a26;
+    --booksy-muted: #6b6258;
+    --booksy-line: #e3dcd1;
+    --booksy-accent: #8a5a3b;       /* terracotta/bruin */
+    --booksy-accent-donker: #6f4630;
+    --booksy-groen: #5c7457;
+    --booksy-rood: #b04a3a;
+    --booksy-zacht: #f0ebe3;
 }
 
 body {
-    background-color: var(--booksy-beige);
-    /* zachte stippeltjes voor een speels tintje */
-    background-image: radial-gradient(var(--booksy-beige-donker) 1.5px, transparent 1.5px);
-    background-size: 22px 22px;
-    color: var(--booksy-bruin);
-    font-family: "Comic Sans MS", "Segoe UI", system-ui, sans-serif;
+    background-color: var(--booksy-bg);
+    color: var(--booksy-ink);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
 }
 
 /* ---- Navbar ---- */
 .navbar {
-    background-color: var(--booksy-goud) !important;
-    border-bottom: 4px dashed var(--booksy-bruin) !important;
-    box-shadow: 0 4px 0 rgba(122, 82, 48, 0.15);
+    background-color: var(--booksy-surface) !important;
+    border-bottom: 1px solid var(--booksy-line) !important;
+    box-shadow: 0 1px 3px rgba(47, 42, 38, 0.06);
 }
 
 .navbar-brand {
-    font-size: 1.6rem;
-    color: var(--booksy-bruin) !important;
-    letter-spacing: 0.5px;
-}
-
-.navbar-brand::before {
-    content: "💩 ";
-}
-
-.navbar-brand::after {
-    content: " 📖";
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.45rem;
+    color: var(--booksy-accent) !important;
+    letter-spacing: 0.3px;
 }
 
 .navbar .nav-link {
-    color: var(--booksy-bruin) !important;
-    font-weight: bold;
-    border-radius: 999px;
-    padding: 0.25rem 0.8rem !important;
-    transition: transform 0.1s ease, background-color 0.1s ease;
+    color: var(--booksy-muted) !important;
+    font-weight: 500;
+    border-radius: 6px;
+    padding: 0.3rem 0.75rem !important;
+    transition: color 0.12s ease, background-color 0.12s ease;
 }
 
 .navbar .nav-link:hover {
-    background-color: var(--booksy-creme);
-    transform: translateY(-2px) rotate(-2deg);
+    color: var(--booksy-accent) !important;
+    background-color: var(--booksy-zacht);
 }
 
 /* ---- Koppen ---- */
 h1, h2, h3 {
-    color: var(--booksy-bruin);
-    font-weight: bold;
+    font-family: Georgia, "Times New Roman", serif;
+    color: var(--booksy-ink);
 }
 
 h1 {
-    text-shadow: 2px 2px 0 var(--booksy-goud);
+    font-size: 1.9rem;
 }
 
 /* ---- Kaarten ---- */
 .card {
-    background-color: var(--booksy-creme);
-    border: 3px solid var(--booksy-bruin);
-    border-radius: 20px;
-    box-shadow: 5px 5px 0 rgba(122, 82, 48, 0.25);
-    overflow: hidden;
-}
-
-.card:hover {
-    transform: rotate(-0.4deg);
-    transition: transform 0.15s ease;
+    background-color: var(--booksy-surface);
+    border: 1px solid var(--booksy-line);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(47, 42, 38, 0.05);
 }
 
 .card-footer,
 .card-header {
-    background-color: var(--booksy-beige);
-    border-color: var(--booksy-bruin);
+    background-color: var(--booksy-zacht);
+    border-color: var(--booksy-line);
 }
 
 /* ---- Knoppen ---- */
 .btn {
-    border-radius: 999px;
-    font-weight: bold;
-    border-width: 2px;
-    border-color: var(--booksy-bruin);
-    box-shadow: 3px 3px 0 rgba(122, 82, 48, 0.3);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
-}
-
-.btn:hover {
-    transform: translateY(-2px) rotate(-1deg);
-    box-shadow: 4px 5px 0 rgba(122, 82, 48, 0.35);
-}
-
-.btn:active {
-    transform: translatey(2px);
-    box-shadow: 1px 1px 0 rgba(122, 82, 48, 0.3);
+    border-radius: 8px;
+    font-weight: 500;
+    transition: background-color 0.12s ease, border-color 0.12s ease;
 }
 
 .btn-primary {
-    background-color: var(--booksy-goud);
-    color: var(--booksy-bruin);
+    background-color: var(--booksy-accent);
+    border-color: var(--booksy-accent);
+    color: #fff;
 }
 
-.btn-primary:hover {
-    background-color: var(--booksy-goud-donker);
-    color: var(--booksy-bruin);
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: var(--booksy-accent-donker);
+    border-color: var(--booksy-accent-donker);
+    color: #fff;
 }
 
 .btn-warning {
-    background-color: var(--booksy-bruin-licht);
-    color: var(--booksy-creme);
+    background-color: #d8a657;
+    border-color: #d8a657;
+    color: #2f2a26;
+}
+
+.btn-warning:hover {
+    background-color: #c8923f;
+    border-color: #c8923f;
 }
 
 .btn-danger {
     background-color: var(--booksy-rood);
+    border-color: var(--booksy-rood);
     color: #fff;
 }
 
-.btn-secondary,
-.btn-outline-primary {
-    background-color: var(--booksy-beige-donker);
-    color: var(--booksy-bruin);
+.btn-secondary {
+    background-color: #8c8378;
+    border-color: #8c8378;
+    color: #fff;
 }
 
-/* link-knop (uitloggen) in de navbar weer plat maken */
+.btn-secondary:hover {
+    background-color: #756c61;
+    border-color: #756c61;
+}
+
+.btn-outline-primary {
+    color: var(--booksy-accent);
+    border-color: var(--booksy-accent);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--booksy-accent);
+    border-color: var(--booksy-accent);
+    color: #fff;
+}
+
+/* link-knop (uitloggen) in de navbar plat houden */
 .navbar .btn-link {
-    box-shadow: none;
-    border: none;
+    color: var(--booksy-muted);
     text-decoration: none;
+    font-weight: 500;
 }
 
 .navbar .btn-link:hover {
-    transform: translateY(-2px) rotate(-2deg);
+    color: var(--booksy-accent);
 }
 
 /* ---- Tabel ---- */
 .table {
-    background-color: var(--booksy-creme);
-    border-radius: 16px;
+    background-color: var(--booksy-surface);
+    border-radius: 10px;
     overflow: hidden;
-    border: 3px solid var(--booksy-bruin);
+    border: 1px solid var(--booksy-line);
 }
 
 .table > thead {
-    background-color: var(--booksy-goud);
-    color: var(--booksy-bruin);
+    background-color: var(--booksy-zacht);
 }
 
 .table > thead th {
-    border-bottom: 3px solid var(--booksy-bruin) !important;
+    color: var(--booksy-muted);
+    font-weight: 600;
+    border-bottom: 1px solid var(--booksy-line) !important;
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) > * {
-    background-color: var(--booksy-beige);
-    color: var(--booksy-bruin);
+    background-color: #faf8f4;
 }
 
 .table-striped > tbody > tr:hover > * {
-    background-color: var(--booksy-beige-donker);
+    background-color: var(--booksy-zacht);
 }
 
 /* ---- Badges ---- */
 .badge {
-    border-radius: 999px;
+    border-radius: 6px;
     font-size: 0.78rem;
-    padding: 0.4em 0.7em;
+    font-weight: 500;
+    padding: 0.4em 0.65em;
 }
 
 .badge.bg-secondary {
@@ -184,43 +183,52 @@ h1 {
 }
 
 .badge.bg-info {
-    background-color: var(--booksy-goud) !important;
-    color: var(--booksy-bruin) !important;
+    background-color: var(--booksy-zacht) !important;
+    color: var(--booksy-accent-donker) !important;
+    border: 1px solid var(--booksy-line);
 }
 
 /* ---- Formulieren ---- */
 .form-control,
 .form-select {
-    border: 2px solid var(--booksy-bruin-licht);
-    border-radius: 12px;
-    background-color: var(--booksy-creme);
-    color: var(--booksy-bruin);
+    border: 1px solid var(--booksy-line);
+    border-radius: 8px;
+    background-color: var(--booksy-surface);
+    color: var(--booksy-ink);
 }
 
 .form-control:focus,
 .form-select:focus {
-    border-color: var(--booksy-goud-donker);
-    box-shadow: 0 0 0 0.25rem rgba(224, 168, 59, 0.35);
+    border-color: var(--booksy-accent);
+    box-shadow: 0 0 0 0.2rem rgba(138, 90, 59, 0.18);
 }
 
 .form-label {
-    font-weight: bold;
-    color: var(--booksy-bruin);
+    font-weight: 500;
+    color: var(--booksy-ink);
 }
 
-/* boekomslagen krijgen een klein randje */
+/* boekomslagen krijgen een net randje */
 img.rounded {
-    border: 2px solid var(--booksy-bruin) !important;
+    border: 1px solid var(--booksy-line) !important;
 }
 
-/* validatie/foutmeldingen iets warmer */
+/* validatie/foutmeldingen */
 .text-danger {
     color: var(--booksy-rood) !important;
 }
 
 .alert-warning {
-    background-color: var(--booksy-beige-donker);
-    border: 2px dashed var(--booksy-bruin);
-    border-radius: 14px;
-    color: var(--booksy-bruin);
+    background-color: var(--booksy-zacht);
+    border: 1px solid var(--booksy-line);
+    border-radius: 10px;
+    color: var(--booksy-ink);
+}
+
+/* ---- Footer ---- */
+.booksy-footer {
+    color: var(--booksy-muted);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--booksy-line);
+    padding-top: 1rem;
 }
